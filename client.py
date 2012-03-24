@@ -2,14 +2,6 @@ from Tkinter import *
 import random
 
 def init():
-    rows = canvas.data.rows
-    cols = canvas.data.cols
-    #assigning the color when that cell is empty(does not have block in it)
-    canvas.data.emptyColor = "#1C2124"
-    #making the tetris grid
-    board = [([canvas.data.emptyColor] * cols) for row in xrange(rows)]
-    # pre-load a few cells with known colors for testing purposes
-    canvas.data.board = board
     #designing the seven different tetris pieces using 2d lists that holds the
     #truth-value of if that cell contains the piece
     iPiece = [[True,True,True,True]]
@@ -37,6 +29,14 @@ def init():
     timerFired()
     
 def restart():
+    #init the clean board
+    rows = canvas.data.rows
+    cols = canvas.data.cols
+    #assigning the color when that cell is empty(does not have block in it)
+    canvas.data.emptyColor = "#1C2124"
+    board = [([canvas.data.emptyColor] * cols) for row in xrange(rows)]
+    canvas.data.board = board
+    
     canvas.data.countMoves = 0
     canvas.data.isGameOver = False
     canvas.data.score = 0
