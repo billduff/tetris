@@ -1,4 +1,3 @@
-
 from Tkinter import *
 import random
 
@@ -34,13 +33,17 @@ def init():
                          "red"]
     canvas.data.tetrisPieces = tetrisPieces
     canvas.data.tetrisPieceColors = tetrisPieceColors
-    #choosing an initial fallingPiece
+    restart()
+    timerFired()
+    
+def restart():
     canvas.data.countMoves = 0
     canvas.data.isGameOver = False
     canvas.data.score = 0
+    canvas.data.canHold = True
+    canvas.data.heldPiece = None
     newFallingPiece()
-    timerFired()
-    
+
 #draws each cell in the grid    
 def drawCell(row,col,color):
     #creates a border for the cell and the actual cell
@@ -57,8 +60,8 @@ def drawBoard():
             drawCell(20+col*20, 20+row*20,canvas.data.board[row][col])
     if(canvas.data.isGameOver == True):
         canvas.create_text(((cols*20+20)/2), (((rows*20)+20)/2),
-            text = "Game Over!", fill = "white",
-            font = "Times 20 bold")
+            text = "Game Over", fill = "white",
+            font = "Courier 20 bold")
             
 #to randomly chose a piece, set its color and position it in the middle of the
 #top row   
@@ -210,6 +213,25 @@ def dropPiece():
         movePossible = moveFallingPiece(drow,dcol)
         if(movePossible == True):
             canvas.data.countMoves += 1
+            
+def holdPiece():
+    if(canvas.data.canHold == True):
+        if (canvas.data.heldPiece == None):
+            canvas.data.heldPiece = canvas.data.fallingPiece
+            canvas.data.heldPieceColor = canvas.data.fallingPieceColor
+            newFallingPiece()
+        else:
+            tempPiece = canvas.data.fallingPiece
+            tempColor = canvas.data.fallingPieceColor
+            canvas.data.fallingPiece = canvas.data.heldPiece
+            canvas.data.fallingPieceColor = canvas.data.heldPieceColor
+            canvas.data.fallingPieceRow = 0
+            canvas.data.fallingPieceCol = canvas.data.cols/2
+            canvas.data.fallingPieceCol -= canvas.data.fallingPieceCol/2
+            canvas.data.heldPiece = tempPiece
+            canvas.data.heldPieceColor = tempColor
+        canvas.data.canHold = False #can only use hold once per piece
+        
 
 def placeFallingPiece():
     fallingPieceRow = canvas.data.fallingPieceRow
@@ -243,14 +265,26 @@ def removeFullRows():
         
 #remakes the game at it current position evertime it is redrawn
 def drawGame():
-    canvas.create_rectangle(0,0,canvas.data.cols*20 + 40,canvas.data.rows*20
+    canvas.create_rectangle(0,0,canvas.data.cols*20 + 140,canvas.data.rows*20
                             + 40, fill = "black")
     drawBoard()
     drawFallingPiece()
     
 def drawScore():
-    canvas.create_text((canvas.data.cols*20)/2, 10, text = "SCORE = %d" %(canvas.data.score), fill = "white", font = "Times 16 bold")
+    canvas.create_text((canvas.data.cols*22)/2, 10, text = "SCORE = %d" %(canvas.data.score), fill = "white", font = "Courier 16 bold")
     
+def drawHeld():
+    canvas.create_text((canvas.data.cols*28), 40,
+                        text = "Held Piece:",
+                        fill = "white", font = "Courier 16 bold")
+    if(canvas.data.heldPiece != None):
+        for row in xrange(len(canvas.data.heldPiece)):
+            for col in xrange(len(canvas.data.heldPiece[0])):
+                if (canvas.data.heldPiece[row][col] == True):
+                    drawCell(30+(canvas.data.cols+col)*20,
+                             60+(row)*20,
+                             canvas.data.heldPieceColor)
+
 #initiates the moving and rotation of the falling piece 
 def keyPressed(event):
     if(canvas.data.isGameOver == False):
@@ -273,9 +307,11 @@ def keyPressed(event):
             rotateFallingPiece()
         elif(event.keysym == "space"):
             dropPiece()
+        elif(event.keysym == "z"): #z to hold for now
+            holdPiece()
         redrawAll()
     if(event.char == "r"):
-        init()
+        restart()
     
 def timerFired():
     if(canvas.data.isGameOver == False):
@@ -287,21 +323,23 @@ def timerFired():
                 canvas.data.isGameOver = True
             placeFallingPiece()
             newFallingPiece()
+            canvas.data.canHold = True
             canvas.data.countMoves = 0
         redrawAll()
-    delay = 2000
+    delay = 800
     canvas.after(delay, timerFired)
     
 def redrawAll():
     canvas.delete(ALL)
     drawGame()
     drawScore()
+    drawHeld()
 
 # to create the root and canvas
 def run(rows,cols):
     global canvas
     root = Tk()
-    canvas = Canvas(root, width = cols*20 +40, height = rows*20 + 40)
+    canvas = Canvas(root, width = cols*20 + 140, height = rows*20 + 40)
     canvas.pack()
     root.resizable(width = 0, height = 0)
     root.canvas = canvas.canvas = canvas
