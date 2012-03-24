@@ -1,4 +1,3 @@
-
 from Tkinter import *
 import random
 
@@ -34,13 +33,16 @@ def init():
                          "red"]
     canvas.data.tetrisPieces = tetrisPieces
     canvas.data.tetrisPieceColors = tetrisPieceColors
-    #choosing an initial fallingPiece
+    restart()
+    timerFired()
+    
+def restart():
     canvas.data.countMoves = 0
     canvas.data.isGameOver = False
     canvas.data.score = 0
+    canvas.data.heldPiece = None
     newFallingPiece()
-    timerFired()
-    
+
 #draws each cell in the grid    
 def drawCell(row,col,color):
     #creates a border for the cell and the actual cell
@@ -223,6 +225,16 @@ def dropPiece():
         movePossible = moveFallingPiece(drow,dcol)
         if(movePossible == True):
             canvas.data.countMoves += 1
+            
+def holdPiece():
+    if (canvas.data.heldPiece == None):
+        canvas.data.heldPiece = canvas.data.fallingPiece
+        newFallingPiece()
+    else:
+        tempPiece = canvas.data.fallingPiece
+        canvas.data.fallingPiece = canvas.data.heldPiece
+        canvas.data.heldPiece = canvas.data.fallingPiece
+        
 
 def placeFallingPiece():
     fallingPieceRow = canvas.data.fallingPieceRow
@@ -286,9 +298,11 @@ def keyPressed(event):
             rotateFallingPiece()
         elif(event.keysym == "space"):
             dropPiece()
+        elif(event.keysym == "z"): #z to hold for now
+            holdPiece()
         redrawAll()
     if(event.char == "r"):
-        init()
+        restart()
     
 def timerFired():
     if(canvas.data.isGameOver == False):
@@ -302,7 +316,7 @@ def timerFired():
             newFallingPiece()
             canvas.data.countMoves = 0
         redrawAll()
-    delay = 2000
+    delay = 1000
     canvas.after(delay, timerFired)
     
 def redrawAll():
