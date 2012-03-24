@@ -1,4 +1,5 @@
 import commlib
+import gamestates
 
 def Gameover():
     return False
