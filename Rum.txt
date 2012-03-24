@@ -1,5 +1,6 @@
 Room names:
-truncated euclidean solids .xxx
-dihedral toroidial manifolds .xxx
-quantum solenoids
-quaternion 
+truncated euclidean solids
+dihedral toroidial manifolds 
+quantum solenoids lesbian
+quaternion mathedemia nutella
+integrated 
