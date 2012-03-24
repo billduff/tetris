@@ -6,7 +6,7 @@ def init():
     rows = canvas.data.rows
     cols = canvas.data.cols
     #assigning the color when that cell is empty(does not have block in it)
-    canvas.data.emptyColor = "blue"
+    canvas.data.emptyColor = "#1C2124"
     #making the tetris grid
     board = [([canvas.data.emptyColor] * cols) for row in xrange(rows)]
     # pre-load a few cells with known colors for testing purposes
@@ -30,8 +30,8 @@ def init():
     tetrisPieces = [iPiece, jPiece, lPiece, oPiece, sPiece, tPiece, zPiece]
     #the colors of each of the tetris pieces are assigned in the same order in
     #another list called tetrisPiecesColors
-    tetrisPieceColors = ["red", "yellow", "magenta", "pink", "cyan", "green",
-                         "orange"]
+    tetrisPieceColors = ["cyan", "blue", "orange", "yellow", "green", "#F4E",
+                         "red"]
     canvas.data.tetrisPieces = tetrisPieces
     canvas.data.tetrisPieceColors = tetrisPieceColors
     #choosing an initial fallingPiece
@@ -156,25 +156,25 @@ def removeFullRows():
     newRow = rows-1
     fullRowCount = 0
     for oldRow in xrange(rows-1,-1,-1):
-        if(canvas.data.board[oldRow].count("blue") != 0):
+        if(canvas.data.board[oldRow].count("#1C2124") != 0):
             copyRow(oldRow,newRow)
             newRow -= 1
         else:
             fullRowCount += 1
     for fillRow in xrange(newRow,-1,-1):
         for element in xrange(len(canvas.data.board[0])):
-            canvas.data.board[fillRow][element] = "blue"
-    canvas.data.score += int(fullRowCount**2)
+            canvas.data.board[fillRow][element] = "#1C2124"
+    canvas.data.score += int(fullRowCount**2**100)
         
 #remakes the game at it current position evertime it is redrawn
 def drawGame():
     canvas.create_rectangle(0,0,canvas.data.cols*20 + 40,canvas.data.rows*20
-                            + 40, fill = "orange")
+                            + 40, fill = "black")
     drawBoard()
     drawFallingPiece()
     
 def drawScore():
-    canvas.create_text((canvas.data.cols*20)/2, 10, text = "SCORE = %d" %(canvas.data.score), fill = "black", font = "Times 16 bold")
+    canvas.create_text((canvas.data.cols*20)/2, 10, text = "SCORE = %d" %(canvas.data.score), fill = "white", font = "Times 16 bold")
     
 #initiates the moving and rotation of the falling piece 
 def keyPressed(event):
@@ -190,6 +190,7 @@ def keyPressed(event):
         elif(event.keysym == "Down"):
             drow = 1
             dcol = 0
+            canvas.data.score += 1
             movePossible = moveFallingPiece(drow,dcol)
             if(movePossible == True):
                 canvas.data.countMoves += 1
