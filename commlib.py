@@ -45,9 +45,12 @@ class Commlink(object):
 	
 	def send(self,ip,message):
 		print "This function should send a message to the other IP"
+        #change to take list of messages?
 	
 	def poll(self):
 		print "This function should get messages from the other computers"
+        #Make sure this gets the players in the same order every time.
+        #Should return a list of messages
 
 f = open("wordlist.txt")
 ipwords = f.read()
