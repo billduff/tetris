@@ -113,36 +113,28 @@ def moveFallingPiece(drow,dcol):
 def fallingPieceCenter():
     iPiece1 = [[True,True,True,True]]
     iPiece2 = [[True],[True],[True],[True]]
-    
     jPiece1 = [[True,False,False],[True,True,True]]
     jPiece2 = [[False,True],[False,True],[True,True]]
     jPiece3 = [[True,True,True],[False,False,True]]
     jPiece4 = [[True,True],[True,False],[True,False]]
-    
     lPiece1 = [[False,False,True],[True,True,True]]
     lPiece2 = [[True, False],[True,False],[True,True]]
     lPiece3 = [[True,True,True],[True,False,False]]
     lPiece4 = [[True,True],[False,True],[False,True]]
-    
     oPiece = [[True,True],[True,True]]
-                
     sPiece1 = [[False,True,True],[True,True,False]]
     sPiece2 = [[True, False],[True, True], [False,True]]
-    
     tPiece1 = [[False,True,False],[True,True,True]]
     tPiece2 = [[True, False],[True, True],[True, False]]
     tPiece3 = [[True,True,True],[False,True,False]]
     tPiece4 = [[False,True],[True,True],[False,True]]
-    
     zPiece1 = [[True,True,False],[False,True,True]]
     zPiece2 = [[False, True],[True,True],[True, False]]
-    
     #I pieces
     if(canvas.data.fallingPiece == iPiece1): 
         return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol+2)
     elif(canvas.data.fallingPiece == iPiece2):
         return(canvas.data.fallingPieceRow+2, canvas.data.fallingPieceCol + 1)
-
     #J Pieces
     elif(canvas.data.fallingPiece == jPiece1): 
         return(canvas.data.fallingPieceRow +1, canvas.data.fallingPieceCol +1)
@@ -152,7 +144,6 @@ def fallingPieceCenter():
         return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol +1)
     elif(canvas.data.fallingPiece == jPiece4):
         return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol)
-
     # L pieces
     elif(canvas.data.fallingPiece == lPiece1): 
         return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
@@ -162,19 +153,16 @@ def fallingPieceCenter():
         return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol + 1)
     elif(canvas.data.fallingPiece == lPiece4): 
         return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
-
     #O Pieces
     elif(canvas.data.fallingPiece == oPiece): 
         row = canvas.data.fallingPieceRow
         col = canvas.data.fallingPieceCol
         return (row, col)
-
     #S Pieces
     elif(canvas.data.fallingPiece == sPiece1):
         return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol + 1)
     elif(canvas.data.fallingPiece == sPiece2):
         return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol)
-    
     #T Pieces
     elif(canvas.data.fallingPiece == tPiece1): 
         return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
@@ -184,7 +172,6 @@ def fallingPieceCenter():
         return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol + 1)
     elif(canvas.data.fallingPiece == tPiece4): 
         return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol+1)
-       
     #Z Pieces
     elif(canvas.data.fallingPiece == zPiece1):
         return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol + 1)
