@@ -3,8 +3,9 @@ import urllib
 
 class Commlink(object):
 	def __init__(self):
-		pass
-	def getThisIP(self):
+		self.myip = self.getMyIP()
+
+	def getMyIP(self):
 		webserviceurl = "http://automation.whatismyip.com/n09230945.asp" #HTTP GET request to this URL returns the public IP address
 		try:
 			webpageobj = urllib.urlopen(webserviceurl)
@@ -43,7 +44,7 @@ def wordsToIP(words):
 
 def testCommlink():
 	c = Commlink()
-	ip = c.getThisIP()
+	ip = c.myip
 	print "This computer's IP is",ip
 	ipstr = ipToWords(ip)
 	print "This computer's IP Name is",ipstr
