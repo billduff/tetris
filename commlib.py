@@ -25,6 +25,10 @@ class Commlink(object):
 	def poll(self):
 		print "This function should get messages from the other computers"
 
+f = open("wordlist.txt")
+wordList = f.read()
+f.close()
+
 ipWords = []
 
 def ipToWords(ip):
