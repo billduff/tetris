@@ -27,7 +27,7 @@ class Commlink(object):
 		return ipaddr
 	
 	def availableForConnections(self):
-		self.connectedUsers = []
+		self.connectedusers = []
 
 	def connectToIP(self, ip):
 		print "This function should connect to a different computer"
