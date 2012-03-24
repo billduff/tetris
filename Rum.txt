@@ -1,3 +1,5 @@
 Room names:
 truncated euclidean solids .xxx
 dihedral toroidial manifolds .xxx
+quantum solenoids
+quaternion 
