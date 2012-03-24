@@ -27,7 +27,18 @@ class Commlink(object):
 		return ipaddr
 	
 	def availableForConnections(self):
-		self.connectedusers = []
+		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		s.bind(("",port))
+		s.listen(1)
+		print "Listening for connections..."
+		conn, addr = s.accept() #this code blocks! use threading to get around it later
+		print "Connected by",addr
+		while True:
+			data = conn.recv(1024)
+			if not data: break
+			conn.send("OK")
+		conn.close()
+		#self.connectedusers = []
 
 	def connectToIP(self, ip):
 		print "This function should connect to a different computer"
