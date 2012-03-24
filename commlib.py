@@ -26,10 +26,10 @@ class Commlink(object):
 		print "This function should get messages from the other computers"
 
 f = open("wordlist.txt")
-wordList = f.read()
+wordlist = f.read()
 f.close()
 
-ipWords = []
+ipwords = []
 
 def ipToWords(ip):
 	pass
