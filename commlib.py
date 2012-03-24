@@ -1,5 +1,11 @@
 import socket
 import urllib
+import ConfigParser
+
+config = ConfigParser.ConfigParser()
+config.read("tetrisrc.conf")
+
+port = int(config.get("configvalues","port"))
 
 class Commlink(object):
 	def __init__(self):
@@ -48,5 +54,6 @@ def testCommlink():
 	print "This computer's IP is",ip
 	ipstr = ipToWords(ip)
 	print "This computer's IP Name is",ipstr
+	print "The computer will connect on port",port
 
 testCommlink()
