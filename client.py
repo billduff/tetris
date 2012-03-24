@@ -284,7 +284,7 @@ def drawGame():
     drawFallingPiece()
     
 def drawScore():
-    canvas.create_text((canvas.data.cols*20)/2, 10, text = "SCORE = %d" %(canvas.data.score), fill = "white", font = "Courier 16 bold")
+    canvas.create_text((canvas.data.cols*21)/2, 10, text = "SCORE = %d" %(canvas.data.score), fill = "white", font = "Courier 16 bold")
     
 #initiates the moving and rotation of the falling piece 
 def keyPressed(event):
