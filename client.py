@@ -135,6 +135,16 @@ def rotateFallingPiece():
         canvas.data.fallingPiece = fallingPiece
         canvas.data.fallingPieceRow = fallingPieceRow
         canvas.data.fallingPieceCol = fallingPieceCol
+        
+def dropPiece():
+    movePossible = True
+    while(movePossible == True):
+        drow = 1
+        dcol = 0
+        canvas.data.score += 2
+        movePossible = moveFallingPiece(drow,dcol)
+        if(movePossible == True):
+            canvas.data.countMoves += 1
 
 def placeFallingPiece():
     fallingPieceRow = canvas.data.fallingPieceRow
@@ -164,7 +174,7 @@ def removeFullRows():
     for fillRow in xrange(newRow,-1,-1):
         for element in xrange(len(canvas.data.board[0])):
             canvas.data.board[fillRow][element] = "#1C2124"
-    canvas.data.score += int(fullRowCount**200)
+    canvas.data.score += int(fullRowCount**2)*100
         
 #remakes the game at it current position evertime it is redrawn
 def drawGame():
@@ -196,6 +206,8 @@ def keyPressed(event):
                 canvas.data.countMoves += 1
         elif(event.keysym == "Up"):
             rotateFallingPiece()
+        elif(event.keysym == "space"):
+            dropPiece()
         redrawAll()
     if(event.char == "r"):
         init()
