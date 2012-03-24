@@ -1,3 +1,4 @@
+
 from Tkinter import *
 import random
 
@@ -44,7 +45,7 @@ def init():
 def drawCell(row,col,color):
     #creates a border for the cell and the actual cell
     canvas.create_rectangle(row, col, row+20, col+20, fill = "black")
-    canvas.create_rectangle(row+2, col+2, row+18, col+18, fill = color)
+    canvas.create_rectangle(row, col, row+20, col+20, fill = color)
 
 #makes the grid
 def drawBoard():
