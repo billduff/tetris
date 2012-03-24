@@ -109,38 +109,48 @@ def moveFallingPiece(drow,dcol):
         return False
     return True
      
+#Find the point of rotation for falling pieces
 def fallingPieceCenter():
-    
     iPiece = [[True,True,True,True]]
-    jPiece = [[True,False,False],
-              [True,True,True]]
+    
+    jPiece1 = [[True,False,False],[True,True,True]]
+    jPiece2 = [[False,True],[False,True],[True,True]]
+    jPiece3 = [[True,True,True],[False,False,True]]
+    jPiece4 = [[True,True],[True,False],[True,False]]
     
     lPiece1 = [[False,False,True],[True,True,True]]
     lPiece2 = [[True, False],[True,False],[True,True]]
     lPiece3 = [[True,True,True],[True,False,False]]
     lPiece4 = [[True,True],[False,True],[False,True]]
     
-    oPiece = [[True,True],
-              [True,True]] 
-    sPiece = [[False,True,True],
-              [True,True,False]]
+    oPiece = [[True,True],[True,True]]
+                
+    sPiece = [[False,True,True],[True,True,False]]
     
     tPiece1 = [[False,True,False],[True,True,True]]
     tPiece2 = [[True, False],[True, True],[True, False]]
     tPiece3 = [[True,True,True],[False,True,False]]
     tPiece4 = [[False,True],[True,True],[False,True]]
     
-    zPiece = [[True,True,False],
-              [False,True,True]]
+    zPiece = [[True,True,False],[False,True,True]]
     
+    #I pieces
     if(canvas.data.fallingPiece == iPiece): 
-        print "iPiece"
         row = canvas.data.fallingPieceRow + (len(canvas.data.fallingPiece)/2)
         col = canvas.data.fallingPieceCol + (len(canvas.data.fallingPiece[0])/2)
         return (row,col)
-    elif(canvas.data.fallingPiece == jPiece): 
-        print "jPiece"
-        
+
+    #J Pieces
+    elif(canvas.data.fallingPiece == jPiece1): 
+        return(canvas.data.fallingPieceRow +1, canvas.data.fallingPieceCol +1)
+    elif(canvas.data.fallingPiece == jPiece2): 
+        return(canvas.data.fallingPieceRow+1, canvas.data.fallingPieceCol +1)
+    elif(canvas.data.fallingPiece == jPiece3): 
+        return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol +1)
+    elif(canvas.data.fallingPiece == jPiece4):
+        return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol)
+
+    # L pieces
     elif(canvas.data.fallingPiece == lPiece1): 
         return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
     elif(canvas.data.fallingPiece == lPiece2): 
@@ -150,18 +160,17 @@ def fallingPieceCenter():
     elif(canvas.data.fallingPiece == lPiece4): 
         return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
 
-
+    #O Pieces
     elif(canvas.data.fallingPiece == oPiece): 
-        print "oPiece"
         row = canvas.data.fallingPieceRow
         col = canvas.data.fallingPieceCol
         return (row, col)
     elif(canvas.data.fallingPiece == sPiece): 
-        print "sPiece"
         row = canvas.data.fallingPieceRow + (len(canvas.data.fallingPiece)/2)
         col = canvas.data.fallingPieceCol + (len(canvas.data.fallingPiece[0])/2)
         return (row,col)
 
+    #T Pieces
     elif(canvas.data.fallingPiece == tPiece1): 
         return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
     elif(canvas.data.fallingPiece == tPiece2): 
@@ -171,16 +180,13 @@ def fallingPieceCenter():
     elif(canvas.data.fallingPiece == tPiece4): 
         return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol+1)
        
+    #Z Pieces
     elif(canvas.data.fallingPiece == zPiece): 
-        print "zPiece"
         row = canvas.data.fallingPieceRow + (len(canvas.data.fallingPiece)/2)
         col = canvas.data.fallingPieceCol + (len(canvas.data.fallingPiece[0])/2)
         return (row,col)
-    
-    row = canvas.data.fallingPieceRow + (len(canvas.data.fallingPiece)/2)
-    col = canvas.data.fallingPieceCol + (len(canvas.data.fallingPiece[0])/2)
-    return (row,col)
-    
+#Falling Piece Center    
+
 def rotateFallingPiece():
     fallingPiece = canvas.data.fallingPiece
     oldRows = len(fallingPiece)
