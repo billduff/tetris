@@ -10,7 +10,7 @@ port = int(config.get("configvalues","port"))
 class Commlink(object):
 	def __init__(self):
 		self.myip = self.getMyIP()
-		self.availableForConnections()
+		#self.availableForConnections()
 
 	def getMyIP(self):
 		webserviceurl = "http://automation.whatismyip.com/n09230945.asp" #HTTP GET request to this URL returns the public IP address
@@ -82,5 +82,4 @@ def testCommlink():
 	ipstr = ipToWords(ip)
 	print "This computer's IP Name is",ipstr
 	print "The computer will connect on port",port
-
-testCommlink()
+	c.availableForConnections()
