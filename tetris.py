@@ -9,7 +9,8 @@ try:
     elif sys.argv[1] == "-h":
         host.tetris()
     elif sys.argv[1] == "-w":
-        print commlib.ipwords
+        for i in xrange(len(commlib.ipwords)):
+            print i, ":", commlib.ipwords[i]
     else:
         print "Usage: python tetris.py -c <room name> OR python tetris.py -h OR python tetris.py -w"
 except:

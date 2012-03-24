@@ -63,7 +63,14 @@ def ipToWords(ip):
 	return ipstr
 
 def wordsToIP(words):
-	pass
+    ip = []
+    for word in words.split(' '):
+        i = 0
+        ipword = ipwords[ip]
+        while ipword != word:
+            i += 1
+            ipword = ipwords[ip]
+        ip.append(i)
 
 def testCommlink():
 	c = Commlink()
