@@ -57,8 +57,8 @@ def drawBoard():
             drawCell(20+col*20, 20+row*20,canvas.data.board[row][col])
     if(canvas.data.isGameOver == True):
         canvas.create_text(((cols*20+20)/2), (((rows*20)+20)/2),
-            text = "Game Over!!", fill = "white",
-            font = "Times 30 bold")
+            text = "Game Over!", fill = "white",
+            font = "Times 20 bold")
             
 #to randomly chose a piece, set its color and position it in the middle of the
 #top row   
@@ -110,6 +110,63 @@ def moveFallingPiece(drow,dcol):
     return True
      
 def fallingPieceCenter():
+    
+    iPiece = [[True,True,True,True]]
+    jPiece = [[True,False,False],
+              [True,True,True]]
+    lPiece = [[False,False,True],
+              [True,True,True]]
+    oPiece = [[True,True],
+              [True,True]] 
+    sPiece = [[False,True,True],
+              [True,True,False]]
+    
+    tPiece1 = [[False,True,False],[True,True,True]]
+    tPiece2 = [[True, False],[True, True],[True, False]]
+    tPiece3 = [[True,True,True],[False,True,False]]
+    tPiece4 = [[False,True],[True,True],[False,True]]
+    
+    zPiece = [[True,True,False],
+              [False,True,True]]
+    
+    if(canvas.data.fallingPiece == iPiece): 
+        print "iPiece"
+        row = canvas.data.fallingPieceRow + (len(canvas.data.fallingPiece)/2)
+        col = canvas.data.fallingPieceCol + (len(canvas.data.fallingPiece[0])/2)
+        return (row,col)
+    elif(canvas.data.fallingPiece == jPiece): 
+        print "jPiece"
+        
+    elif(canvas.data.fallingPiece == lPiece): 
+        print "lPiece"
+    elif(canvas.data.fallingPiece == oPiece): 
+        print "oPiece"
+        row = canvas.data.fallingPieceRow
+        col = canvas.data.fallingPieceCol
+        return (row, col)
+    elif(canvas.data.fallingPiece == sPiece): 
+        print "sPiece"
+        row = canvas.data.fallingPieceRow + (len(canvas.data.fallingPiece)/2)
+        col = canvas.data.fallingPieceCol + (len(canvas.data.fallingPiece[0])/2)
+        return (row,col)
+
+    elif(canvas.data.fallingPiece == tPiece1): 
+        return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
+    elif(canvas.data.fallingPiece == tPiece2): 
+        return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol)
+    elif(canvas.data.fallingPiece == tPiece3): 
+        return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol + 1)
+    elif(canvas.data.fallingPiece == tPiece4): 
+        return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol+1)
+
+    
+       
+    elif(canvas.data.fallingPiece == zPiece): 
+        print "zPiece"
+        row = canvas.data.fallingPieceRow + (len(canvas.data.fallingPiece)/2)
+        col = canvas.data.fallingPieceCol + (len(canvas.data.fallingPiece[0])/2)
+        return (row,col)
+    
     row = canvas.data.fallingPieceRow + (len(canvas.data.fallingPiece)/2)
     col = canvas.data.fallingPieceCol + (len(canvas.data.fallingPiece[0])/2)
     return (row,col)
@@ -224,7 +281,7 @@ def timerFired():
             newFallingPiece()
             canvas.data.countMoves = 0
         redrawAll()
-    delay = 500
+    delay = 2000
     canvas.after(delay, timerFired)
     
 def redrawAll():
