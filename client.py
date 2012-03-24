@@ -164,7 +164,7 @@ def removeFullRows():
     for fillRow in xrange(newRow,-1,-1):
         for element in xrange(len(canvas.data.board[0])):
             canvas.data.board[fillRow][element] = "#1C2124"
-    canvas.data.score += int(fullRowCount**2**100)
+    canvas.data.score += int(fullRowCount**200)
         
 #remakes the game at it current position evertime it is redrawn
 def drawGame():
