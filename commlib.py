@@ -10,6 +10,7 @@ port = int(config.get("configvalues","port"))
 class Commlink(object):
 	def __init__(self):
 		self.myip = self.getMyIP()
+		self.availableForConnections()
 
 	def getMyIP(self):
 		webserviceurl = "http://automation.whatismyip.com/n09230945.asp" #HTTP GET request to this URL returns the public IP address
@@ -24,11 +25,16 @@ class Commlink(object):
 		ipaddr = ipaddr.split(".")
 		ipaddr = [int(i) for i in ipaddr]
 		return ipaddr
-		
+	
+	def availableForConnections(self):
+		self.connectedusers = []
+
 	def connectToIP(self, ip):
 		print "This function should connect to a different computer"
+	
 	def send(self,ip,message):
 		print "This function should send a message to the other IP"
+	
 	def poll(self):
 		print "This function should get messages from the other computers"
 
