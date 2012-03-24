@@ -40,6 +40,7 @@ def restart():
     canvas.data.countMoves = 0
     canvas.data.isGameOver = False
     canvas.data.score = 0
+    canvas.data.canHold = True
     canvas.data.heldPiece = None
     newFallingPiece()
 
@@ -59,8 +60,8 @@ def drawBoard():
             drawCell(20+col*20, 20+row*20,canvas.data.board[row][col])
     if(canvas.data.isGameOver == True):
         canvas.create_text(((cols*20+20)/2), (((rows*20)+20)/2),
-            text = "Game Over!", fill = "white",
-            font = "Times 20 bold")
+            text = "Game Over", fill = "white",
+            font = "Courier 20 bold")
             
 #to randomly chose a piece, set its color and position it in the middle of the
 #top row   
@@ -227,13 +228,22 @@ def dropPiece():
             canvas.data.countMoves += 1
             
 def holdPiece():
-    if (canvas.data.heldPiece == None):
-        canvas.data.heldPiece = canvas.data.fallingPiece
-        newFallingPiece()
-    else:
-        tempPiece = canvas.data.fallingPiece
-        canvas.data.fallingPiece = canvas.data.heldPiece
-        canvas.data.heldPiece = canvas.data.fallingPiece
+    if(canvas.data.canHold == True):
+        if (canvas.data.heldPiece == None):
+            canvas.data.heldPiece = canvas.data.fallingPiece
+            canvas.data.heldPieceColor = canvas.data.fallingPieceColor
+            newFallingPiece()
+        else:
+            tempPiece = canvas.data.fallingPiece
+            tempColor = canvas.data.fallingPieceColor
+            canvas.data.fallingPiece = canvas.data.heldPiece
+            canvas.data.fallingPieceColor = canvas.data.heldPieceColor
+            canvas.data.fallingPieceRow = 0
+            canvas.data.fallingPieceCol = canvas.data.cols/2
+            canvas.data.fallingPieceCol -= canvas.data.fallingPieceCol/2
+            canvas.data.heldPiece = tempPiece
+            canvas.data.heldPieceColor = tempColor
+        canvas.data.canHold = False #can only use hold once per piece
         
 
 def placeFallingPiece():
@@ -274,7 +284,7 @@ def drawGame():
     drawFallingPiece()
     
 def drawScore():
-    canvas.create_text((canvas.data.cols*20)/2, 10, text = "SCORE = %d" %(canvas.data.score), fill = "white", font = "Times 16 bold")
+    canvas.create_text((canvas.data.cols*20)/2, 10, text = "SCORE = %d" %(canvas.data.score), fill = "white", font = "Courier 16 bold")
     
 #initiates the moving and rotation of the falling piece 
 def keyPressed(event):
@@ -314,9 +324,10 @@ def timerFired():
                 canvas.data.isGameOver = True
             placeFallingPiece()
             newFallingPiece()
+            canvas.data.canHold = True
             canvas.data.countMoves = 0
         redrawAll()
-    delay = 1000
+    delay = 800
     canvas.after(delay, timerFired)
     
 def redrawAll():
