@@ -1,0 +1,3 @@
+Room names:
+truncated euclidean solids .xxx
+dihedral toroidial manifolds .xxx

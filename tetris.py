@@ -1,1 +1,1 @@
-echo "lol"
+lol = 0
