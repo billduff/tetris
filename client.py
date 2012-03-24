@@ -278,14 +278,26 @@ def removeFullRows():
         
 #remakes the game at it current position evertime it is redrawn
 def drawGame():
-    canvas.create_rectangle(0,0,canvas.data.cols*20 + 40,canvas.data.rows*20
+    canvas.create_rectangle(0,0,canvas.data.cols*20 + 140,canvas.data.rows*20
                             + 40, fill = "black")
     drawBoard()
     drawFallingPiece()
     
 def drawScore():
-    canvas.create_text((canvas.data.cols*21)/2, 10, text = "SCORE = %d" %(canvas.data.score), fill = "white", font = "Courier 16 bold")
+    canvas.create_text((canvas.data.cols*22)/2, 10, text = "SCORE = %d" %(canvas.data.score), fill = "white", font = "Courier 16 bold")
     
+def drawHeld():
+    canvas.create_text((canvas.data.cols*28), 40,
+                        text = "Held Piece:",
+                        fill = "white", font = "Courier 16 bold")
+    if(canvas.data.heldPiece != None):
+        for row in xrange(len(canvas.data.heldPiece)):
+            for col in xrange(len(canvas.data.heldPiece[0])):
+                if (canvas.data.heldPiece[row][col] == True):
+                    drawCell(30+(canvas.data.cols+col)*20,
+                             60+(row)*20,
+                             canvas.data.heldPieceColor)
+
 #initiates the moving and rotation of the falling piece 
 def keyPressed(event):
     if(canvas.data.isGameOver == False):
@@ -334,12 +346,13 @@ def redrawAll():
     canvas.delete(ALL)
     drawGame()
     drawScore()
+    drawHeld()
 
 # to create the root and canvas
 def run(rows,cols):
     global canvas
     root = Tk()
-    canvas = Canvas(root, width = cols*20 +40, height = rows*20 + 40)
+    canvas = Canvas(root, width = cols*20 + 140, height = rows*20 + 40)
     canvas.pack()
     root.resizable(width = 0, height = 0)
     root.canvas = canvas.canvas = canvas
