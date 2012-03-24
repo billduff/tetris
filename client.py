@@ -114,8 +114,12 @@ def fallingPieceCenter():
     iPiece = [[True,True,True,True]]
     jPiece = [[True,False,False],
               [True,True,True]]
-    lPiece = [[False,False,True],
-              [True,True,True]]
+    
+    lPiece1 = [[False,False,True],[True,True,True]]
+    lPiece2 = [[True, False],[True,False],[True,True]]
+    lPiece3 = [[True,True,True],[True,False,False]]
+    lPiece4 = [[True,True],[False,True],[False,True]]
+    
     oPiece = [[True,True],
               [True,True]] 
     sPiece = [[False,True,True],
@@ -137,8 +141,16 @@ def fallingPieceCenter():
     elif(canvas.data.fallingPiece == jPiece): 
         print "jPiece"
         
-    elif(canvas.data.fallingPiece == lPiece): 
-        print "lPiece"
+    elif(canvas.data.fallingPiece == lPiece1): 
+        return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
+    elif(canvas.data.fallingPiece == lPiece2): 
+        return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol)
+    elif(canvas.data.fallingPiece == lPiece3): 
+        return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol + 1)
+    elif(canvas.data.fallingPiece == lPiece4): 
+        return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
+
+
     elif(canvas.data.fallingPiece == oPiece): 
         print "oPiece"
         row = canvas.data.fallingPieceRow
@@ -158,8 +170,6 @@ def fallingPieceCenter():
         return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol + 1)
     elif(canvas.data.fallingPiece == tPiece4): 
         return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol+1)
-
-    
        
     elif(canvas.data.fallingPiece == zPiece): 
         print "zPiece"
