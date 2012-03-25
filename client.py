@@ -194,9 +194,13 @@ def rotateFallingPiece():
     newRows = oldCols
     newCols = oldRows
     rotatedFallingPiece = [([True] * newCols) for i in xrange(newRows)]
-    for row in xrange(oldRows-1,-1,-1):
-        for col in xrange(oldCols): 
+    for row in xrange(oldRows-1,-1,-1): 
+        for col in xrange(oldCols):
             rotatedFallingPiece[col][oldRows-1-row] = fallingPiece[row][col]
+            #To change direction in which pieces rotate (ccw vs. cw): 
+            #(1) Change oldRows-1,-1,-1 to oldRows
+            #(2) Change oldCols to oldCols-1,-1,-1             
+            #(3) change [col][oldRows-1-row] to [oldCols-1-col][row] 
     (oldCenterRow,oldCenterCol) = fallingPieceCenter()
     canvas.data.fallingPiece = rotatedFallingPiece
     (newCenterRow,newCenterCol) = fallingPieceCenter()
