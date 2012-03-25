@@ -42,6 +42,9 @@ def restart():
     canvas.data.score = 0
     canvas.data.canHold = True
     canvas.data.heldPiece = None
+    canvas.data.nextPiece = None
+    canvas.data.nextPieceColor = None
+    newNextPiece()
     newFallingPiece()
 
 #draws each cell in the grid    
@@ -62,16 +65,18 @@ def drawBoard():
         canvas.create_text(((cols*20+20)/2), (((rows*20)+20)/2),
             text = "Game Over", fill = "white",
             font = "Courier 20 bold")
-            
-#to randomly chose a piece, set its color and position it in the middle of the
-#top row   
-def newFallingPiece():
-    #random.randint(a,b) gives a random number n between a and b such that
-    # a <= n <= b
-    #chooses a random tetris piece to be the next falling piece
+   
+#to randomly chose a next piece, set its color and position it in the
+#middle of the top row         
+def newNextPiece():
     index = random.randint(0,6)
-    canvas.data.fallingPiece = canvas.data.tetrisPieces[index]
-    canvas.data.fallingPieceColor = canvas.data.tetrisPieceColors[index]
+    canvas.data.nextPiece = canvas.data.tetrisPieces[index]
+    canvas.data.nextPieceColor = canvas.data.tetrisPieceColors[index]
+            
+#choose the new falling piece to be the 'next piece'
+def newFallingPiece():
+    canvas.data.fallingPiece = canvas.data.nextPiece
+    canvas.data.fallingPieceColor = canvas.data.nextPieceColor
     #ensuring that the falling piece starts in the middle of the top row
     canvas.data.fallingPieceRow = 0
     canvas.data.fallingPieceCol = canvas.data.cols/2
@@ -232,6 +237,7 @@ def holdPiece():
         if (canvas.data.heldPiece == None):
             canvas.data.heldPiece = canvas.data.fallingPiece
             canvas.data.heldPieceColor = canvas.data.fallingPieceColor
+            newNextPiece()
             newFallingPiece()
         else:
             tempPiece = canvas.data.fallingPiece
@@ -297,6 +303,18 @@ def drawHeld():
                     drawCell(30+(canvas.data.cols+col)*20,
                              60+(row)*20,
                              canvas.data.heldPieceColor)
+                    
+def drawNext():
+    canvas.create_text((canvas.data.cols*28), 120,
+                        text = "Next Piece:",
+                        fill = "white", font = "Courier 16 bold")
+    if(canvas.data.nextPiece != None):
+        for row in xrange(len(canvas.data.nextPiece)):
+            for col in xrange(len(canvas.data.nextPiece[0])):
+                if (canvas.data.nextPiece[row][col] == True):
+                    drawCell(30+(canvas.data.cols+col)*20,
+                             140+(row)*20,
+                             canvas.data.nextPieceColor)
 
 #initiates the moving and rotation of the falling piece 
 def keyPressed(event):
@@ -336,6 +354,7 @@ def timerFired():
                 canvas.data.isGameOver = True
             placeFallingPiece()
             newFallingPiece()
+            newNextPiece()
             canvas.data.canHold = True
             canvas.data.countMoves = 0
         redrawAll()
@@ -347,6 +366,7 @@ def redrawAll():
     drawGame()
     drawScore()
     drawHeld()
+    drawNext()
 
 # to create the root and canvas
 def run(rows,cols):
