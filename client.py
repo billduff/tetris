@@ -360,16 +360,15 @@ def keyPressed(event):
         elif(event.keysym == "Down"):
             if canvas.data.delay == standardDelay:
                 drow = 1
-                canvas.data.delay = standardDelay / 3
-            #drow = 1
-            #canvas.data.score += 1
-            #movePossible = moveFallingPiece(drow,dcol)
-            #if(movePossible == True):
-            #    canvas.data.Moved = True
-            #if canvas.data.landed == False:
-            #    canvas.after_cancel(canvas.data.timerId)
-            #    canvas.data.timerId = canvas.after(canvas.data.delay, timerFired)
-            #    canvas.data.landed = True
+                canvas.data.score += 1
+                movePossible = moveFallingPiece(drow,dcol)
+                if(movePossible == True):
+                    canvas.data.Moved = True
+                if canvas.data.landed == False:
+                    canvas.after_cancel(canvas.data.timerId)
+                    canvas.data.timerId = canvas.after(canvas.data.delay, timerFired)
+                    canvas.data.landed = True
+            canvas.data.delay = standardDelay / 3
         elif(event.keysym == "Up"):
             rotateFallingPiece()
         elif(event.keysym == "space"):
