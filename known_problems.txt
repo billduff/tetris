@@ -1,5 +1,1 @@
-Rotation does not work properly. This is because of a bad center calculation.
-
-Sliding should be allowed for longer after the piece first 'lands'.
-
-Sliding is allowed for a short period after pressing space. Pressing space should immediately skip the player to the next piece.
+Client does not yet interface with server communication.
