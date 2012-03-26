@@ -30,10 +30,7 @@ def ipToWords(ip):
 def wordsToIP(ipstr):
 	ip = []
 	for ipword in ipstr.split(' '):
-		i = 0
-		wordguess = ipwords[i]
-		while wordguess != ipword:
-			i += 1
-			ipword = ipwords[i]
-		ip.append(i)
+		for i in xrange(len(ipwords)):
+			if ipword == ipwords[i]:
+				ip.append(i)
 	return ip
