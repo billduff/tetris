@@ -37,12 +37,11 @@ class ServerThread(Thread):
             blastMessage(newMsg) # Send out new message to all connected clients
 
         inFlo.close()
-        outFlo.close()
         self._sock.close()
         print 'Closed socket'
         print 'Exiting thread'
 
-        connectionThreads.remove(self)
+        connectionThreads.remove(self) # Remove self from the list of threads
 
     def sendMsg(self, message):
         outFlo = self._sock.makefile(mode='w')
@@ -78,7 +77,7 @@ def main(argv):
             print 'Accepted connection, opened socket'
             serverThread = ServerThread(sock, address);
             serverThread.start();
-            serverThread.sendMsg("Welcome to the LAN party!")
+            serverThread.sendMsg("Welcome to the LAN party!\n")
             connectionThreads.append(serverThread) # Add thread to list
 
     except Exception, e:
