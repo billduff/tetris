@@ -1,39 +1,63 @@
 #!/usr/bin/env python
 
 #-----------------------------------------------------------------------
-# echoservermult.py
-# Author: Bob Dondero
+# server.py
 #-----------------------------------------------------------------------
 
 from sys import exit, argv
 from socket import socket, AF_INET, SOCK_STREAM
 from threading import Thread
+from time import time
 
 BACKLOG = 5
-
+chatLog = [] # This will be an array of tuples in the form (time, address, msg) 
+connectionThreads = [] # Keep track of all connections so we can blast messages
 #-----------------------------------------------------------------------
 
 class ServerThread(Thread):
-    def __init__(self, sock):
+    def __init__(self, sock, address):
         Thread.__init__(self)
         self._sock = sock
+        self._address = address
+        self._outFlo = self._sock.makefile(mode='w')
+        self._outFlo.write("Welcome to the LAN party!")
+
+    # Opens a input stream that listens for new messages from client
     def run(self):
         print 'Spawned thread'
         inFlo = self._sock.makefile(mode='r')
-        outFlo = self._sock.makefile(mode='w')
         while True:
             line = inFlo.readline()
             if not line:
                 break
-            outFlo.write('Echo: ' + line)
-            outFlo.flush()
+
+            print line
+
+            newMsg = (time(), self._address, line)
+            chatLog.append(newMsg) # Keep track of all the chat messages ever received
+
+            blastMessage(newMsg) # Send out new message to all connected clients
+
         inFlo.close()
         outFlo.close()
         self._sock.close()
         print 'Closed socket'
         print 'Exiting thread'
 
+        # connectionThreads.remove(self)
+
+    def sendMsg(self, message):
+        (t, addr, msg) = message
+        (addr, port) = addr
+        msg = str(t) + " " +  addr + " " + msg
+        print "SEND MSG: ", msg
+        self._outFlo.write(msg)
+
 #-----------------------------------------------------------------------
+def blastMessage(newMsg):
+    for client in connectionThreads:
+        print client
+        client.sendMsg(newMsg)
 
 def main(argv):
 
@@ -54,8 +78,14 @@ def main(argv):
         while True:
             sock, address = serverSock.accept()
             print 'Accepted connection, opened socket'
-            serverThread = ServerThread(sock);
+
+            outFlo = sock.makefile(mode="w")
+            outFlo.write("Welcome to the LAN party!")
+            outFlo.close()
+
+            serverThread = ServerThread(sock, address);
             serverThread.start();
+            connectionThreads.append(serverThread) # Add thread to list
 
     except Exception, e:
         print e
