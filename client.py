@@ -141,13 +141,11 @@ def fallingPieceCenter():
     zPiece2 = [[False, True],[True,True],[True, False]]
     #I pieces
     if(canvas.data.fallingPiece == iPiece1):
-        print canvas.data.fallingPieceRotation
         if (canvas.data.fallingPieceRotation / 2) == 0:
             return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol+2)
         else:
             return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol+3)
     elif(canvas.data.fallingPiece == iPiece2):
-        print canvas.data.fallingPieceRotation
         if (canvas.data.fallingPieceRotation / 2) == 0:
             return(canvas.data.fallingPieceRow+3, canvas.data.fallingPieceCol + 1)
         else:
@@ -177,13 +175,11 @@ def fallingPieceCenter():
         return (row, col)
     #S Pieces
     elif(canvas.data.fallingPiece == sPiece1):
-        print canvas.data.fallingPieceRotation
         if (canvas.data.fallingPieceRotation / 2) == 0:
             return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol + 1)
         else:
             return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
     elif(canvas.data.fallingPiece == sPiece2):
-        print canvas.data.fallingPieceRotation
         if (canvas.data.fallingPieceRotation / 2) == 0:
             return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol)
         else:
@@ -199,13 +195,11 @@ def fallingPieceCenter():
         return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol+1)
     #Z Pieces
     elif(canvas.data.fallingPiece == zPiece1):
-        print canvas.data.fallingPieceRotation
         if (canvas.data.fallingPieceRotation / 2) == 0:
             return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol + 1)
         else:
             return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
     elif(canvas.data.fallingPiece == zPiece2):
-        print canvas.data.fallingPieceRotation
         if (canvas.data.fallingPieceRotation / 2) == 0:
             return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol + 1)
         else:
