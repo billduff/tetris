@@ -37,7 +37,7 @@ def restart():
     board = [([canvas.data.emptyColor] * cols) for row in xrange(rows)]
     canvas.data.board = board
     
-    canvas.data.countMoves = 0
+    canvas.data.Moved = 0
     canvas.data.isGameOver = False
     canvas.data.score = 0
     canvas.data.canHold = True
@@ -241,8 +241,10 @@ def dropPiece():
         canvas.data.score += 2
         movePossible = moveFallingPiece(drow,dcol)
         if(movePossible == True):
-            canvas.data.countMoves += 1
-            
+            canvas.data.Moved += 1
+    canvas.after_cancel(canvas.data.timerId)
+    timerFired()
+
 def holdPiece():
     if(canvas.data.canHold == True):
         if (canvas.data.heldPiece == None):
@@ -343,7 +345,9 @@ def keyPressed(event):
             canvas.data.score += 1
             movePossible = moveFallingPiece(drow,dcol)
             if(movePossible == True):
-                canvas.data.countMoves += 1
+                canvas.data.Moved = True
+            canvas.after_cancel(canvas.data.timerId)
+            canvas.data.timerId = canvas.after(800, timerFired)
         elif(event.keysym == "Up"):
             rotateFallingPiece()
         elif(event.keysym == "space"):
@@ -358,18 +362,17 @@ def timerFired():
     if(canvas.data.isGameOver == False):
         movePossible = moveFallingPiece(1,0)
         if(movePossible == True):
-            canvas.data.countMoves += 1
+            canvas.data.Moved = True
         else:
-            if(canvas.data.countMoves == 0):
+            if(not canvas.data.Moved):
                 canvas.data.isGameOver = True
             placeFallingPiece()
             newFallingPiece()
             newNextPiece()
             canvas.data.canHold = True
-            canvas.data.countMoves = 0
+            canvas.data.Moved = False
         redrawAll()
-    delay = 800
-    canvas.after(delay, timerFired)
+    canvas.data.timerId = canvas.after(800, timerFired)
     
 def redrawAll():
     canvas.delete(ALL)
