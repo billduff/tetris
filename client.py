@@ -1,6 +1,8 @@
 from Tkinter import *
 import random
 
+delay = 600
+
 def init():
     #designing the seven different tetris pieces using 2d lists that holds the
     #truth-value of if that cell contains the piece
@@ -41,6 +43,7 @@ def restart():
     canvas.data.isGameOver = False
     canvas.data.score = 0
     canvas.data.canHold = True
+    canvas.data.landed = False
     canvas.data.heldPiece = None
     canvas.data.nextPiece = None
     canvas.data.nextPieceColor = None
@@ -331,29 +334,30 @@ def drawNext():
 #initiates the moving and rotation of the falling piece 
 def keyPressed(event):
     if(canvas.data.isGameOver == False):
+        drow = 0
+        dcol = 0
         if(event.keysym == "Left"):
-            drow = 0
             dcol = -1
             moveFallingPiece(drow,dcol)
         elif(event.keysym == "Right"):
-            drow = 0
             dcol = 1
             moveFallingPiece(drow,dcol)
-        elif(event.keysym == "Down"):
-            drow = 1
-            dcol = 0
-            canvas.data.score += 1
-            movePossible = moveFallingPiece(drow,dcol)
-            if(movePossible == True):
-                canvas.data.Moved = True
-            canvas.after_cancel(canvas.data.timerId)
-            canvas.data.timerId = canvas.after(800, timerFired)
         elif(event.keysym == "Up"):
             rotateFallingPiece()
         elif(event.keysym == "space"):
             dropPiece()
-        elif(event.keysym == "z"): #z to hold for now
+        elif(event.keysym == "Shift_L" or event.keysym == "Shift_R"):
             holdPiece()
+        if(event.keysym == "Down"):
+            drow = 1
+            canvas.data.score += 1
+            movePossible = moveFallingPiece(drow,dcol)
+            if(movePossible == True):
+                canvas.data.Moved = True
+            if canvas.data.landed == False:
+                canvas.after_cancel(canvas.data.timerId)
+                canvas.data.timerId = canvas.after(delay, timerFired)
+                canvas.data.landed = True
         redrawAll()
     if(event.char == "r"):
         restart()
@@ -370,10 +374,11 @@ def timerFired():
             newFallingPiece()
             newNextPiece()
             canvas.data.canHold = True
+            canvas.data.landed = False
             canvas.data.Moved = False
         redrawAll()
-    canvas.data.timerId = canvas.after(800, timerFired)
-    
+    canvas.data.timerId = canvas.after(delay, timerFired)
+
 def redrawAll():
     canvas.delete(ALL)
     drawGame()
