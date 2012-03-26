@@ -293,7 +293,7 @@ def drawScore():
     canvas.create_text((canvas.data.cols*22)/2, 10, text = "SCORE = %d" %(canvas.data.score), fill = "white", font = "Courier 16 bold")
     
 def drawHeld():
-    canvas.create_text((canvas.data.cols*28), 40,
+    canvas.create_text((canvas.data.cols*28), 340,
                         text = "Held Piece:",
                         fill = "white", font = "Courier 16 bold")
     if(canvas.data.heldPiece != None):
@@ -301,11 +301,11 @@ def drawHeld():
             for col in xrange(len(canvas.data.heldPiece[0])):
                 if (canvas.data.heldPiece[row][col] == True):
                     drawCell(30+(canvas.data.cols+col)*20,
-                             60+(row)*20,
+                             360+(row)*20,
                              canvas.data.heldPieceColor)
                     
 def drawNext():
-    canvas.create_text((canvas.data.cols*28), 120,
+    canvas.create_text((canvas.data.cols*28), 40,
                         text = "Next Piece:",
                         fill = "white", font = "Courier 16 bold")
     if(canvas.data.nextPiece != None):
@@ -313,7 +313,7 @@ def drawNext():
             for col in xrange(len(canvas.data.nextPiece[0])):
                 if (canvas.data.nextPiece[row][col] == True):
                     drawCell(30+(canvas.data.cols+col)*20,
-                             140+(row)*20,
+                             60+(row)*20,
                              canvas.data.nextPieceColor)
 
 #initiates the moving and rotation of the falling piece 
