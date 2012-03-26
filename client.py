@@ -1,9 +1,12 @@
 from Tkinter import *
 import random
+import fileinput
 
 delay = 600
 
 def init():
+    canvas.quotes = []
+    getQuotes()
     #designing the seven different tetris pieces using 2d lists that holds the
     #truth-value of if that cell contains the piece
     iPiece = [[True,True,True,True]]
@@ -50,6 +53,10 @@ def restart():
     newNextPiece()
     newFallingPiece()
 
+def getQuotes():
+    for line in fileinput.input("eddie_quotes.txt"):
+        canvas.quotes.append(line[:-1])
+
 #draws each cell in the grid    
 def drawCell(row,col,color):
     #creates a border for the cell and the actual cell
@@ -65,9 +72,16 @@ def drawBoard():
         for col in xrange(cols):
             drawCell(20+col*20, 20+row*20,canvas.data.board[row][col])
     if(canvas.data.isGameOver == True):
+        quoteNum = random.randint(0, len(canvas.quotes) - 1)
         canvas.create_text(((cols*20+20)/2), (((rows*20)+20)/2),
-            text = "Game Over", fill = "white",
-            font = "Courier 20 bold")
+            text = "Game Over\n", fill = "white",
+            font = "Courier 22 bold")
+        #display a random Eddie quote when you die, like COD but better
+        canvas.create_text(25, (((rows*20)+200)/2),
+            anchor = "nw",
+            width = (cols*21),
+            text = "\"" + canvas.quotes[quoteNum] + "\" - Eddie",
+            fill = "white", font = "Courier 12 bold")
    
 #to randomly chose a next piece, set its color and position it in the
 #middle of the top row         
@@ -308,7 +322,7 @@ def drawScore():
     canvas.create_text((canvas.data.cols*22)/2, 10, text = "SCORE = %d" %(canvas.data.score), fill = "white", font = "Courier 16 bold")
     
 def drawHeld():
-    canvas.create_text((canvas.data.cols*28), 40,
+    canvas.create_text((canvas.data.cols*28), 340,
                         text = "Held Piece:",
                         fill = "white", font = "Courier 16 bold")
     if(canvas.data.heldPiece != None):
@@ -316,11 +330,11 @@ def drawHeld():
             for col in xrange(len(canvas.data.heldPiece[0])):
                 if (canvas.data.heldPiece[row][col] == True):
                     drawCell(30+(canvas.data.cols+col)*20,
-                             60+(row)*20,
+                             360+(row)*20,
                              canvas.data.heldPieceColor)
                     
 def drawNext():
-    canvas.create_text((canvas.data.cols*28), 120,
+    canvas.create_text((canvas.data.cols*28), 40,
                         text = "Next Piece:",
                         fill = "white", font = "Courier 16 bold")
     if(canvas.data.nextPiece != None):
@@ -328,7 +342,7 @@ def drawNext():
             for col in xrange(len(canvas.data.nextPiece[0])):
                 if (canvas.data.nextPiece[row][col] == True):
                     drawCell(30+(canvas.data.cols+col)*20,
-                             140+(row)*20,
+                             60+(row)*20,
                              canvas.data.nextPieceColor)
 
 #initiates the moving and rotation of the falling piece 
