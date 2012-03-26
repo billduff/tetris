@@ -23,6 +23,10 @@ class ClientThread(Thread):
             line = inFlo.readline()
             if not line:
                 break
+
+	    print line
+            
+            print line
             
         inFlo.close()
         print 'Exiting thread'
@@ -42,7 +46,6 @@ def main(argv):
         print 'Client IP addr and port:', sock.getsockname()
         print 'Server IP addr and port:', sock.getpeername()
 
-        # inFlo = sock.makefile(mode='r')  # flo means "file-like object"
         outFlo = sock.makefile(mode='w') 
 
         clientThread = ClientThread(sock)
@@ -55,7 +58,6 @@ def main(argv):
             outFlo.write(line)
             outFlo.flush()
 
-        # inFlo.close()
         outFlo.close()
         sock.close()
 
