@@ -7,62 +7,67 @@
 from sys import exit, argv, stdin
 from socket import socket, AF_INET, SOCK_STREAM
 from threading import Thread
+import ConfigParser
+
 #-----------------------------------------------------------------------
 
-class ClientThread(Thread):
-    def __init__(self, sock):
-        Thread.__init__(self)
-        self._sock = sock
+config = ConfigParser.ConfigParser()
+config.read("tetrisrc.conf")
 
-    def run(self):
-        print 'Listening for new messages from server'
-        
-        inFlo = self._sock.makefile('r')
+port = int(config.get("configvalues","port"))
 
-        while True:
-            line = inFlo.readline()
-            if not line:
-                break
-            
-            print line
-            
-        inFlo.close()
-        print 'Exiting thread'
-            
-def main(argv):
+class ClientReceiveThread(Thread):
+	def __init__(self, sock):
+		Thread.__init__(self)
+		self._sock = sock
+		self._receivedMessages = []
 
-    if len(argv) != 3:
-        print 'Usage: python %s host port' % argv[0]
-        exit(1)
+	def run(self):
+		print 'Listening for new messages from server'
+		
+		inFlo = self._sock.makefile('r')
 
-    try:
-        host = argv[1]
-        port = int(argv[2])
+		while True:
+			line = inFlo.readline()
+			if not line:
+				break
+			self._receivedMessages.append(line)
+			
+		inFlo.close()
+		print 'Exiting thread'
+						
+def connectToServer(serverip):
 
-        sock = socket(AF_INET, SOCK_STREAM)
-        sock.connect((host, port))
-        print 'Client IP addr and port:', sock.getsockname()
-        print 'Server IP addr and port:', sock.getpeername()
+	try:
+		host = ".".join([str(i) for i in serverip])
 
-        outFlo = sock.makefile(mode='w') 
+		sock = socket(AF_INET, SOCK_STREAM)
+		sock.connect((host, port))
+		print 'Client IP addr and port:', sock.getsockname()
+		print 'Server IP addr and port:', sock.getpeername()
 
-        clientThread = ClientThread(sock)
-        clientThread.start()
+		clientReceiveThread = ClientReceiveThread(sock)
+		clientReceiveThread.start()
 
-        while True:
-            line = stdin.readline()
-            if not line:
-                break
-            outFlo.write(line)
-            outFlo.flush()
+		return (clientReceiveThread, sock)
 
-        outFlo.close()
-        sock.close()
+	except Exception, e:
+		print e
 
-    except Exception, e:
-        print e
+def sendToServer(sock, msg):
+	outFlo = sock.makefile(mode='w')
+	outFlo.write(msg)
+	outFlo.flush()
+	outFlo.close()
 
 #-----------------------------------------------------------------------
 
 if __name__ == '__main__':
-    main(argv)
+	import time
+	(crecv, sock) = connectToServer([127,0,0,1])
+	i = 0
+	while True:
+		i += 1
+		time.sleep(1)
+		sendToServer(sock,str(i))
+		print crecv._receivedMessages
