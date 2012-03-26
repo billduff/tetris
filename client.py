@@ -373,7 +373,8 @@ def keyPressed(event):
             rotateFallingPiece()
         elif(event.keysym == "space"):
             dropPiece()
-        elif(event.keysym == "Shift_L" or event.keysym == "Shift_R"):
+        elif(event.keysym == "Shift_L" or event.keysym == "Shift_R"
+             or event.keysym == "z"):
             holdPiece()
         redrawAll()
     if(event.char == "r"):
