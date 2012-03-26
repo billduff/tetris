@@ -358,7 +358,9 @@ def keyPressed(event):
             dcol = 1
             moveFallingPiece(drow,dcol)
         elif(event.keysym == "Down"):
-            canvas.data.delay = standardDelay / 3
+            if canvas.data.delay == standardDelay:
+                drow = 1
+                canvas.data.delay = standardDelay / 3
             #drow = 1
             #canvas.data.score += 1
             #movePossible = moveFallingPiece(drow,dcol)
