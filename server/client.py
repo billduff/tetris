@@ -69,5 +69,5 @@ if __name__ == '__main__':
 	while True:
 		i += 1
 		time.sleep(1)
-		sendToServer(sock,str(i))
+		sendToServer(sock,str(i) + "\n")
 		print crecv._receivedMessages
