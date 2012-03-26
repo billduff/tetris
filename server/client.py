@@ -23,6 +23,8 @@ class ClientThread(Thread):
             line = inFlo.readline()
             if not line:
                 break
+
+	    print line
             
         inFlo.close()
         print 'Exiting thread'
