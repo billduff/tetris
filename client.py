@@ -342,13 +342,7 @@ def keyPressed(event):
         elif(event.keysym == "Right"):
             dcol = 1
             moveFallingPiece(drow,dcol)
-        elif(event.keysym == "Up"):
-            rotateFallingPiece()
-        elif(event.keysym == "space"):
-            dropPiece()
-        elif(event.keysym == "Shift_L" or event.keysym == "Shift_R"):
-            holdPiece()
-        if(event.keysym == "Down"):
+        elif(event.keysym == "Down"):
             drow = 1
             canvas.data.score += 1
             movePossible = moveFallingPiece(drow,dcol)
@@ -358,6 +352,12 @@ def keyPressed(event):
                 canvas.after_cancel(canvas.data.timerId)
                 canvas.data.timerId = canvas.after(delay, timerFired)
                 canvas.data.landed = True
+        elif(event.keysym == "Up"):
+            rotateFallingPiece()
+        elif(event.keysym == "space"):
+            dropPiece()
+        elif(event.keysym == "Shift_L" or event.keysym == "Shift_R"):
+            holdPiece()
         redrawAll()
     if(event.char == "r"):
         restart()
