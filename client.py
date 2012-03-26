@@ -2,7 +2,7 @@ from Tkinter import *
 import random
 import fileinput
 
-delay = 600
+standardDelay = 600
 
 def init():
     canvas.quotes = []
@@ -47,6 +47,7 @@ def restart():
     canvas.data.score = 0
     canvas.data.canHold = True
     canvas.data.landed = False
+    canvas.data.delay = standardDelay
     canvas.data.heldPiece = None
     canvas.data.nextPiece = None
     canvas.data.nextPieceColor = None
@@ -255,7 +256,7 @@ def dropPiece():
     while(movePossible == True):
         drow = 1
         dcol = 0
-        canvas.data.score += 2
+        canvas.data.score += 4
         movePossible = moveFallingPiece(drow,dcol)
         if(movePossible == True):
             canvas.data.Moved += 1
@@ -357,15 +358,16 @@ def keyPressed(event):
             dcol = 1
             moveFallingPiece(drow,dcol)
         elif(event.keysym == "Down"):
-            drow = 1
-            canvas.data.score += 1
-            movePossible = moveFallingPiece(drow,dcol)
-            if(movePossible == True):
-                canvas.data.Moved = True
-            if canvas.data.landed == False:
-                canvas.after_cancel(canvas.data.timerId)
-                canvas.data.timerId = canvas.after(delay, timerFired)
-                canvas.data.landed = True
+            canvas.data.delay = standardDelay / 3
+            #drow = 1
+            #canvas.data.score += 1
+            #movePossible = moveFallingPiece(drow,dcol)
+            #if(movePossible == True):
+            #    canvas.data.Moved = True
+            #if canvas.data.landed == False:
+            #    canvas.after_cancel(canvas.data.timerId)
+            #    canvas.data.timerId = canvas.after(canvas.data.delay, timerFired)
+            #    canvas.data.landed = True
         elif(event.keysym == "Up"):
             rotateFallingPiece()
         elif(event.keysym == "space"):
@@ -375,11 +377,16 @@ def keyPressed(event):
         redrawAll()
     if(event.char == "r"):
         restart()
+        
+def keyReleased(event):
+    if(event.keysym == "Down"):
+            canvas.data.delay = standardDelay
 
 def timerFired():
     if(canvas.data.isGameOver == False):
-        movePossible = moveFallingPiece(1,0)
+        movePossible = moveFallingPiece(1, 0)
         if(movePossible == True):
+            canvas.data.score += 1
             canvas.data.Moved = True
         else:
             if(not canvas.data.Moved):
@@ -391,7 +398,7 @@ def timerFired():
             canvas.data.landed = False
             canvas.data.Moved = False
         redrawAll()
-    canvas.data.timerId = canvas.after(delay, timerFired)
+    canvas.data.timerId = canvas.after(canvas.data.delay, timerFired)
 
 def redrawAll():
     canvas.delete(ALL)
@@ -414,7 +421,8 @@ def run(rows,cols):
     canvas.data.cols = cols
     init()
     redrawAll()
-    root.bind("<Key>", keyPressed)
+    root.bind("<KeyPress>", keyPressed)
+    root.bind("<KeyRelease>", keyReleased)
     root.mainloop()
     
 run(20,10)
