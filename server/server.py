@@ -19,8 +19,6 @@ class ServerThread(Thread):
         Thread.__init__(self)
         self._sock = sock
         self._address = address
-        self._outFlo = self._sock.makefile(mode='w')
-        self._outFlo.write("Welcome to the LAN party!")
 
     # Opens a input stream that listens for new messages from client
     def run(self):
@@ -44,20 +42,20 @@ class ServerThread(Thread):
         print 'Closed socket'
         print 'Exiting thread'
 
-        # connectionThreads.remove(self)
+        connectionThreads.remove(self)
 
     def sendMsg(self, message):
-        (t, addr, msg) = message
-        (addr, port) = addr
-        msg = str(t) + " " +  addr + " " + msg
-        print "SEND MSG: ", msg
-        self._outFlo.write(msg)
+        outFlo = self._sock.makefile(mode='w')
+        outFlo.write(message)
+        outFlo.close()
 
 #-----------------------------------------------------------------------
 def blastMessage(newMsg):
     for client in connectionThreads:
-        print client
-        client.sendMsg(newMsg)
+        (t, addr, msg) = newMsg
+        (addr, port) = addr
+        msg = str(t) + " " +  addr + " " + msg
+        client.sendMsg(msg)
 
 def main(argv):
 
@@ -78,13 +76,9 @@ def main(argv):
         while True:
             sock, address = serverSock.accept()
             print 'Accepted connection, opened socket'
-
-            outFlo = sock.makefile(mode="w")
-            outFlo.write("Welcome to the LAN party!")
-            outFlo.close()
-
             serverThread = ServerThread(sock, address);
             serverThread.start();
+            serverThread.sendMsg("Welcome to the LAN party!")
             connectionThreads.append(serverThread) # Add thread to list
 
     except Exception, e:
