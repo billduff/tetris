@@ -1,5 +1,3 @@
 cant rotate when piece is at top
 
-press space, then immediately go left or right- this still lets you move
-
 Client does not yet interface with server communication.

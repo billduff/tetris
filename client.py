@@ -47,6 +47,7 @@ def restart():
     canvas.data.score = 0
     canvas.data.canHold = True
     canvas.data.landed = False
+    canvas.data.spacePressed = False
     canvas.data.delay = standardDelay
     canvas.data.heldPiece = None
     canvas.data.nextPiece = None
@@ -252,6 +253,8 @@ def rotateFallingPiece():
         canvas.data.fallingPieceCol = fallingPieceCol
 
 def dropPiece():
+    canvas.data.spacePressed = True
+    canvas.after_cancel(canvas.data.timerId)
     movePossible = True
     while(movePossible == True):
         drow = 1
@@ -260,7 +263,7 @@ def dropPiece():
         movePossible = moveFallingPiece(drow,dcol)
         if(movePossible == True):
             canvas.data.Moved += 1
-    canvas.after_cancel(canvas.data.timerId)
+    canvas.data.spacePressed = False
     timerFired()
 
 def holdPiece():
@@ -348,7 +351,7 @@ def drawNext():
 
 #initiates the moving and rotation of the falling piece 
 def keyPressed(event):
-    if(canvas.data.isGameOver == False):
+    if(not canvas.data.isGameOver and not canvas.data.spacePressed):
         drow = 0
         dcol = 0
         if(event.keysym == "Left"):
