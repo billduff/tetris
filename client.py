@@ -10,7 +10,7 @@ def init():
     lPiece = [[False,False,True],
               [True,True,True]]
     oPiece = [[True,True],
-              [True,True]] 
+              [True,True]]
     sPiece = [[False,True,True],
               [True,True,False]]
     tPiece = [[False,True,False],
@@ -82,6 +82,7 @@ def newFallingPiece():
     canvas.data.fallingPieceCol = canvas.data.cols/2
     #to compensate for it being off to the right
     canvas.data.fallingPieceCol -= canvas.data.fallingPieceCol/2
+    canvas.data.fallingPieceRotation = 0
     
 def drawFallingPiece():
     for row in xrange(len(canvas.data.fallingPiece)):
@@ -90,7 +91,7 @@ def drawFallingPiece():
                 drawCell(20+(canvas.data.fallingPieceCol+col)*20,
                          20+(canvas.data.fallingPieceRow+row)*20,
                          canvas.data.fallingPieceColor)
-                
+
 def fallingPieceIsLegal():
     for row in xrange(len(canvas.data.fallingPiece)):
         for col in xrange(len(canvas.data.fallingPiece[0])):
@@ -139,10 +140,16 @@ def fallingPieceCenter():
     zPiece1 = [[True,True,False],[False,True,True]]
     zPiece2 = [[False, True],[True,True],[True, False]]
     #I pieces
-    if(canvas.data.fallingPiece == iPiece1): 
-        return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol+2)
+    if(canvas.data.fallingPiece == iPiece1):
+        if (canvas.data.fallingPieceRotation / 2) == 0:
+            return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol+2)
+        else:
+            return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol+3)
     elif(canvas.data.fallingPiece == iPiece2):
-        return(canvas.data.fallingPieceRow+2, canvas.data.fallingPieceCol + 1)
+        if (canvas.data.fallingPieceRotation / 2) == 0:
+            return(canvas.data.fallingPieceRow+3, canvas.data.fallingPieceCol + 1)
+        else:
+            return(canvas.data.fallingPieceRow+2, canvas.data.fallingPieceCol + 1)
     #J Pieces
     elif(canvas.data.fallingPiece == jPiece1): 
         return(canvas.data.fallingPieceRow +1, canvas.data.fallingPieceCol +1)
@@ -168,9 +175,15 @@ def fallingPieceCenter():
         return (row, col)
     #S Pieces
     elif(canvas.data.fallingPiece == sPiece1):
-        return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol + 1)
+        if (canvas.data.fallingPieceRotation / 2) == 0:
+            return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol + 1)
+        else:
+            return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
     elif(canvas.data.fallingPiece == sPiece2):
-        return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol)
+        if (canvas.data.fallingPieceRotation / 2) == 0:
+            return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol)
+        else:
+            return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
     #T Pieces
     elif(canvas.data.fallingPiece == tPiece1): 
         return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
@@ -182,9 +195,15 @@ def fallingPieceCenter():
         return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol+1)
     #Z Pieces
     elif(canvas.data.fallingPiece == zPiece1):
-        return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol + 1)
+        if (canvas.data.fallingPieceRotation / 2) == 0:
+            return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol + 1)
+        else:
+            return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
     elif(canvas.data.fallingPiece == zPiece2):
-        return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol+1)
+        if (canvas.data.fallingPieceRotation / 2) == 0:
+            return(canvas.data.fallingPieceRow, canvas.data.fallingPieceCol + 1)
+        else:
+            return(canvas.data.fallingPieceRow + 1, canvas.data.fallingPieceCol + 1)
 #Falling Piece Center    
 
 def rotateFallingPiece():
@@ -208,11 +227,12 @@ def rotateFallingPiece():
     fallingPieceCol = canvas.data.fallingPieceCol
     canvas.data.fallingPieceRow += (oldCenterRow - newCenterRow)
     canvas.data.fallingPieceCol += (oldCenterCol - newCenterCol)
+    canvas.data.fallingPieceRotation = (canvas.data.fallingPieceRotation + 1) % 4
     if (fallingPieceIsLegal() == False):
         canvas.data.fallingPiece = fallingPiece
         canvas.data.fallingPieceRow = fallingPieceRow
         canvas.data.fallingPieceCol = fallingPieceCol
-        
+
 def dropPiece():
     movePossible = True
     while(movePossible == True):
@@ -241,7 +261,6 @@ def holdPiece():
             canvas.data.heldPiece = tempPiece
             canvas.data.heldPieceColor = tempColor
         canvas.data.canHold = False #can only use hold once per piece
-        
 
 def placeFallingPiece():
     fallingPieceRow = canvas.data.fallingPieceRow
@@ -253,11 +272,11 @@ def placeFallingPiece():
             if (canvas.data.fallingPiece[row][col] == True):
                 board[(fallingPieceRow+row)][(fallingPieceCol+col)] = color
                 canvas.data.board = board
-                
+
 def copyRow(oldRow,newRow):
     for element in xrange(len(canvas.data.board[0])):
         canvas.data.board[newRow][element] = canvas.data.board[oldRow][element]
-                
+
 def removeFullRows():
     rows = canvas.data.rows
     newRow = rows-1
@@ -272,14 +291,14 @@ def removeFullRows():
         for element in xrange(len(canvas.data.board[0])):
             canvas.data.board[fillRow][element] = "#1C2124"
     canvas.data.score += int(fullRowCount**2)*100
-        
+
 #remakes the game at it current position evertime it is redrawn
 def drawGame():
     canvas.create_rectangle(0,0,canvas.data.cols*20 + 140,canvas.data.rows*20
                             + 40, fill = "black")
     drawBoard()
     drawFallingPiece()
-    
+
 def drawScore():
     canvas.create_text((canvas.data.cols*22)/2, 10, text = "SCORE = %d" %(canvas.data.score), fill = "white", font = "Courier 16 bold")
     
@@ -334,7 +353,7 @@ def keyPressed(event):
         redrawAll()
     if(event.char == "r"):
         restart()
-    
+
 def timerFired():
     if(canvas.data.isGameOver == False):
         movePossible = moveFallingPiece(1,0)
