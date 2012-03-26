@@ -92,5 +92,30 @@ def main(argv):
 
 #-----------------------------------------------------------------------
 
+#Functions to convert ip <-> words
+
+f = open("wordlist.txt")
+ipwords = f.read()
+f.close()
+
+ipwords = ipwords.split(",") 
+
+def ipToWords(ip):
+	ipstr = ""
+	for i in ip:
+		ipstr += ipwords[i] + " "
+	ipstr = ipstr[:-1] #remove trailing space
+	return ipstr
+
+def wordsToIP(words):
+    ip = []
+    for word in words.split(' '):
+        i = 0
+        ipword = ipwords[ip]
+        while ipword != word:
+            i += 1
+            ipword = ipwords[ip]
+        ip.append(i)
+
 if __name__ == '__main__':
     main(argv)
