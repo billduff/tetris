@@ -1,6 +1,6 @@
 cant rotate when piece is at top
 
-first piece holding removes next piece
+first piece holding removes next piece, probably related to the fact that the first and second piece are always the same.
 
 need to implement shadow display
 
