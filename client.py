@@ -1,9 +1,12 @@
 from Tkinter import *
 import random
+import fileinput
 
 delay = 600
 
 def init():
+    canvas.quotes = []
+    getQuotes()
     #designing the seven different tetris pieces using 2d lists that holds the
     #truth-value of if that cell contains the piece
     iPiece = [[True,True,True,True]]
@@ -50,6 +53,10 @@ def restart():
     newNextPiece()
     newFallingPiece()
 
+def getQuotes():
+    for line in fileinput.input("eddie_quotes.txt"):
+        canvas.quotes.append(line[:-1])
+
 #draws each cell in the grid    
 def drawCell(row,col,color):
     #creates a border for the cell and the actual cell
@@ -65,9 +72,16 @@ def drawBoard():
         for col in xrange(cols):
             drawCell(20+col*20, 20+row*20,canvas.data.board[row][col])
     if(canvas.data.isGameOver == True):
+        quoteNum = random.randint(0, len(canvas.quotes) - 1)
         canvas.create_text(((cols*20+20)/2), (((rows*20)+20)/2),
-            text = "Game Over", fill = "white",
-            font = "Courier 20 bold")
+            text = "Game Over\n", fill = "white",
+            font = "Courier 22 bold")
+        #display a random Eddie quote when you die, like COD but better
+        canvas.create_text(25, (((rows*20)+200)/2),
+            anchor = "nw",
+            width = (cols*21),
+            text = "\"" + canvas.quotes[quoteNum] + "\" - Eddie",
+            fill = "white", font = "Courier 12 bold")
    
 #to randomly chose a next piece, set its color and position it in the
 #middle of the top row         
