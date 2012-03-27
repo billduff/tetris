@@ -1,7 +1,10 @@
 import sys
-import commlib
-import host
 import client
+
+client.run("metal a a across")
+
+
+'''
 
 try:
     if sys.argv[1] == "-c":
@@ -15,3 +18,4 @@ try:
         print "Usage: python tetris.py -c <room name> OR python tetris.py -h OR python tetris.py -w"
 except:
     print "Usage: python tetris.py -c <room name> OR python tetris.py -h OR python tetris.py -w"
+'''

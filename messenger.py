@@ -32,7 +32,10 @@ class ClientReceiveThread(Thread):
 			if not line:
 				break
 			self._receivedMessages.append(line)
+		print "ASDF"
 
+		print line
+		
 		inFlo.close()
 		print 'Exiting thread'
 
@@ -60,7 +63,7 @@ class ClientConnect(object):
 
 	def sendToServer(self, msg):
 		outFlo = self._sock.makefile(mode='w')
-		outFlo.write(msg)
+		outFlo.write(msg + "\n")
 		outFlo.flush()
 		outFlo.close()
 
