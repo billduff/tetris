@@ -84,6 +84,10 @@ def drawBoard():
             text = "Game Over\n", fill = "white",
             font = "Courier 22 bold")
         #display a random Eddie quote when you die, like COD but better
+        #x0 y0 x1 y1
+        canvas.create_rectangle(50, (((rows*20)+20)/2),
+                                50+(cols*21), (((rows*20)+100)/2),
+                                fill = "#1C2124")
         canvas.create_text(25, (((rows*20)+200)/2),
             anchor = "nw",
             width = (cols*21),
@@ -324,6 +328,7 @@ def copyRow(oldRow,newRow):
     for element in xrange(len(canvas.data.board[0])):
         canvas.data.board[newRow][element] = canvas.data.board[oldRow][element]
 
+# clear rows 
 def removeFullRows():
     rows = canvas.data.rows
     newRow = rows-1
@@ -338,6 +343,7 @@ def removeFullRows():
         for element in xrange(len(canvas.data.board[0])):
             canvas.data.board[fillRow][element] = "#1C2124"
     canvas.data.score += int(fullRowCount**2)*100
+    #connection.sendMessage("LINES:"+fullRowCount)
 
 #remakes the game at it current position evertime it is redrawn
 def drawGame():
@@ -349,20 +355,21 @@ def drawGame():
 
 #draw the imaginary piece where a drop would place current falling piece
 def drawShadow():
-    #determine where the shadow piece should go
-    canvas.data.shadowPiece = canvas.data.fallingPiece
-    canvas.data.shadowPieceRow = canvas.data.fallingPieceRow
-    while(shadowPieceIsLegal() == True):
-        canvas.data.shadowPieceRow += 1
-    canvas.data.shadowPieceRow -= 1
-    canvas.data.shadowPieceCol = canvas.data.fallingPieceCol
-    #draw it
-    for row in xrange(len(canvas.data.shadowPiece)):
-        for col in xrange(len(canvas.data.shadowPiece[0])):
-            if (canvas.data.shadowPiece[row][col] == True):
-                drawCell(20+(canvas.data.shadowPieceCol+col)*20,
-                         20+(canvas.data.shadowPieceRow+row)*20,
-                         canvas.data.shadowPieceColor)
+    if(not canvas.data.isGameOver):
+        #determine where the shadow piece should go
+        canvas.data.shadowPiece = canvas.data.fallingPiece
+        canvas.data.shadowPieceRow = canvas.data.fallingPieceRow
+        while(shadowPieceIsLegal() == True):
+            canvas.data.shadowPieceRow += 1
+        canvas.data.shadowPieceRow -= 1
+        canvas.data.shadowPieceCol = canvas.data.fallingPieceCol
+        #draw it
+        for row in xrange(len(canvas.data.shadowPiece)):
+            for col in xrange(len(canvas.data.shadowPiece[0])):
+                if (canvas.data.shadowPiece[row][col] == True):
+                    drawCell(20+(canvas.data.shadowPieceCol+col)*20,
+                             20+(canvas.data.shadowPieceRow+row)*20,
+                             canvas.data.shadowPieceColor)
 
 def drawScore():
     canvas.create_text((canvas.data.cols*22)/2, 10, text = "SCORE = %d" %(canvas.data.score), fill = "white", font = "Courier 16 bold")
