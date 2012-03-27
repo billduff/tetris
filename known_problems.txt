@@ -2,6 +2,4 @@ cant rotate when piece is at top
 
 first piece holding removes next piece
 
-need to implement shadow display
-
 Client does not yet interface with server communication.
