@@ -27,7 +27,8 @@ if dialogbox == True:
             self.room_name = room_name
             tkSimpleDialog.Dialog.__init__(self,parent,title)
         def body(self, master):
-            Label(master, text="The room name is: "+self.room_name).grid(row=0)
+            Label(master, text="The room name will be: "+self.room_name).grid(row=0)
+            Label(master, text="Press \"OK\" to start the server.").grid(row=1)
 
 BACKLOG = 5
 chatLog = [] # This will be an array of tuples in the form (time, address, msg) 
