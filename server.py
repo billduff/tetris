@@ -40,11 +40,11 @@ class ServerThread(Thread):
 				break
 
 			print line
+			chatLog.append(line) # Keep track of all the chat messages ever received
 
-			newMsg = {"time": time(), "address": self._address, "line":line}
-			chatLog.append(newMsg) # Keep track of all the chat messages ever received
+			print line
 
-			blastMessage(newMsg, self) # Send out new message to all connected clients
+			blastMessage(line, self) # Send out new message to all connected clients
 
 		inFlo.close()
 		self._sock.close()
@@ -55,7 +55,7 @@ class ServerThread(Thread):
 
 	def sendMsg(self, message):
 		outFlo = self._sock.makefile(mode='w')
-		outFlo.write(message)
+		outFlo.write(message + "\n")
 		outFlo.close()
 
 #-----------------------------------------------------------------------
@@ -63,7 +63,7 @@ def blastMessage(newMsg, exceptThread):
 	for client in connectionThreads:
 		if client != exceptThread:
 			msg = json.dumps(newMsg)
-
+			print msg
 			client.sendMsg(msg)
 
 def main(argv):

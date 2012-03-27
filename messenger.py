@@ -33,6 +33,8 @@ class ClientReceiveThread(Thread):
 			if not line:
 				break
 			self._receivedMessages.append(line)
+			
+			print line
 		
 		inFlo.close()
 		print 'Exiting thread'
