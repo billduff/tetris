@@ -359,7 +359,8 @@ def addJunkRow():
     if not topRowEmpty:
         canvas.data.isGameOver = True
     else:
-        newJunkRow = ([canvas.data.emptyColor] * cols)
+        newJunkRow = (["black"] * cols)
+        newJunkRow[random.randint(0, cols-1)] = canvas.data.emptyColor
         canvas.data.board.pop(0)
         canvas.data.board.append(newJunkRow)
 
