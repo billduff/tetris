@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from Tkinter import *
 import random
 import fileinput
@@ -6,6 +8,8 @@ import iputils
 import re
 import json
 import jsonutils
+import subprocess
+import sys
 import tkSimpleDialog
 
 standardDelay = 600
@@ -487,6 +491,20 @@ def redrawAll():
         drawHeld()
         drawNext()
 
+#DIALOG BOX TO START THE SERVER
+class ServerDialog(tkSimpleDialog.Dialog):
+    def body(self, master):
+        self.cb_client_var = IntVar()
+        self.cb_server_var = IntVar()
+        self.cb_client = Checkbutton(master, text="Start game client", variable=self.cb_client_var)
+        self.cb_server = Checkbutton(master, text="Start game server", variable=self.cb_server_var)
+        self.cb_client.grid(row=0,column=1)
+        self.cb_server.grid(row=1,column=1)
+    
+    def apply(self):
+        self.cb_client_bool = bool(self.cb_client_var.get())
+        self.cb_server_bool = bool(self.cb_server_var.get())
+
 #DIALOG BOX TO GET THE ROOM NAME
 class RoomDialog(tkSimpleDialog.Dialog):
     def body(self, master):
@@ -505,8 +523,16 @@ def run():
         cols = 10
         global canvas
         root = Tk()
-        d = RoomDialog(root)
-        room_name = d.result
+        d1 = ServerDialog(root)
+        startclient = d1.cb_client_bool
+        startserver = d1.cb_server_bool
+        if startserver == True:
+            subprocess.Popen('./server.py', shell=True)
+        if startclient == False:
+            sys.exit()
+        d2 = RoomDialog(root)
+        room_name = d2.result
+        
         canvas = Canvas(root, width = cols*20 + 140, height = rows*20 + 40)
         canvas.pack()
         root.resizable(width = 0, height = 0)
