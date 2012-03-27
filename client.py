@@ -415,7 +415,8 @@ def keyPressed(event):
         elif(event.keysym == "space"):
             dropPiece()
         elif(event.keysym == "Shift_L" or event.keysym == "Shift_R"
-             or event.keysym == "z"):
+             or event.keysym == "z" or event.keycode == 131074
+             or event.keycode == 131076):
             holdPiece()
         redrawAll()
     if(event.char == "r"):
