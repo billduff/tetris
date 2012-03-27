@@ -8,7 +8,6 @@
 #if isJSON(mydictstr):
 #    mydict = jsonToDict(mydictstr)
 
-
 import json
 
 def isJSON(d):

@@ -82,7 +82,7 @@ def main(argv):
 			print 'Accepted connection, opened socket'
 			serverThread = ServerThread(sock, address);
 			serverThread.start();
-			serverThread.sendMsg("Welcome to the LAN party!\n")
+			serverThread.sendMsg("Welcome to the LAN party!")
 			connectionThreads.append(serverThread) # Add thread to list
 
 	except Exception, e:
