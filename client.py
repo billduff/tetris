@@ -346,7 +346,7 @@ def removeFullRows():
                         
         if fullRowCount != 0:
                 canvas.data.score += int(fullRowCount**2)*100    
-                canvas.data.connection.sendDict({"lines":fullRowCount})
+                canvas.data.connection.sendDict({"lines":fullRowCount}) #Sends the dict as a JSON string to the server
 
 def addManyJunkRows(rows):
         for i in xrange(rows):
@@ -471,7 +471,7 @@ def timerFired():
         
         # NETWORK CONNECTIONS
         for i in canvas.data.connection._receivedMessages:  
-                if jsonutils.isDict(i):
+                if jsonutils.isJSON(i):
                         d = jsonutils.jsonToDict(i)
                         if "lines" in d:
                                 numLines = d["lines"]    
