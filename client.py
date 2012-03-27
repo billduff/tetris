@@ -1,8 +1,8 @@
 from Tkinter import *
 import random
 import fileinput
-import server/messenger
-import server/iputils
+import messenger
+import iputils
 
 standardDelay = 600
 
@@ -340,8 +340,10 @@ def removeFullRows():
     for fillRow in xrange(newRow,-1,-1):
         for element in xrange(len(canvas.data.board[0])):
             canvas.data.board[fillRow][element] = "#1C2124"
-    canvas.data.score += int(fullRowCount**2)*100
-    canvas.data.connection.sendMessage("LINES:"+fullRowCount)
+            
+    if fullRowCount != 0:
+		canvas.data.score += int(fullRowCount**2)*100
+		canvas.data.connection.sendToServer("LINES:"+str(fullRowCount))
 
 #remakes the game at it current position evertime it is redrawn
 def drawGame():
@@ -444,6 +446,11 @@ def timerFired():
             canvas.data.Moved = False
         redrawAll()
     canvas.data.timerId = canvas.after(canvas.data.delay, timerFired)
+    
+    
+    
+    # NETWORK CONNECTIONS
+    print canvas.data.connection._receivedMessages
 
 def redrawAll():
     canvas.delete(ALL)
@@ -457,7 +464,6 @@ def run(room_name):
     rows = 20
     cols = 10
     global canvas
-    canvas.data.connection = ClientConnect(iputils.wordsToIP(room_name))
     root = Tk()
     canvas = Canvas(root, width = cols*20 + 140, height = rows*20 + 40)
     canvas.pack()
@@ -465,6 +471,7 @@ def run(room_name):
     root.canvas = canvas.canvas = canvas
     class Struct: pass
     canvas.data = Struct()
+    canvas.data.connection = messenger.ClientConnect(iputils.wordsToIP(room_name))
     canvas.data.rows = rows
     canvas.data.cols = cols
     init()
