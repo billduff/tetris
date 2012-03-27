@@ -8,6 +8,7 @@ from sys import exit, argv, stdin
 from socket import socket, AF_INET, SOCK_STREAM
 from threading import Thread
 import ConfigParser
+import json
 
 #-----------------------------------------------------------------------
 
