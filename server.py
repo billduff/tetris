@@ -34,7 +34,7 @@ class ServerThread(Thread):
             newMsg = (time(), self._address, line)
             chatLog.append(newMsg) # Keep track of all the chat messages ever received
 
-            blastMessage(newMsg) # Send out new message to all connected clients
+            blastMessage(newMsg, self) # Send out new message to all connected clients
 
         inFlo.close()
         self._sock.close()
@@ -49,11 +49,12 @@ class ServerThread(Thread):
         outFlo.close()
 
 #-----------------------------------------------------------------------
-def blastMessage(newMsg):
+def blastMessage(newMsg, exceptThread):
     for client in connectionThreads:
-        (t, addr, msg) = newMsg
-        (addr, port) = addr
-        client.sendMsg(msg)
+		if client != exceptThread:
+			(t, addr, msg) = newMsg
+			(addr, port) = addr
+			client.sendMsg(msg)
 
 def main(argv):
 
