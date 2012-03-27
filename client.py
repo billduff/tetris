@@ -353,12 +353,10 @@ def addManyJunkRows(rows):
 		addJunkRow()
 	
 def addJunkRow():
-	
-	print "JUNK ROW CALLED"
 	# first check if we have been KO'd
 	topRowEmpty = True
 	for c in xrange(canvas.data.cols):
-		if canvas.data.board[canvas.data.rows-1][c] != canvas.data.emptyColor:
+		if canvas.data.board[0][c] != canvas.data.emptyColor:
 			topRowEmpty = False
 			break
 	if not topRowEmpty:
