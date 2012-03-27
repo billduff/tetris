@@ -5,6 +5,7 @@ import messenger
 import iputils
 import re
 import json
+import jsonutils
 
 standardDelay = 600
 
@@ -344,9 +345,8 @@ def removeFullRows():
                         canvas.data.board[fillRow][element] = canvas.data.emptyColor
                         
         if fullRowCount != 0:
-                canvas.data.score += int(fullRowCount**2)*100
-                sendstr = json.dumps({"lines":fullRowCount})
-                canvas.data.connection.sendToServer(sendstr)
+                canvas.data.score += int(fullRowCount**2)*100    
+                canvas.data.connection.sendDict({"lines":fullRowCount})
 
 def addManyJunkRows(rows):
         for i in xrange(rows):
@@ -470,17 +470,12 @@ def timerFired():
         
         
         # NETWORK CONNECTIONS
-        for i in canvas.data.connection._receivedMessages:
-            #    print i	
-                try:
-                        d = json.loads(i)
-            #            print d
-                        if u"lines" in d:
-                                numLines = d[u"lines"]
-            #                    print numLines
-                                addManyJunkRows(numLines)
-                except Exception, e:
-                        print "exception", e
+        for i in canvas.data.connection._receivedMessages:  
+                if jsonutils.isDict(i):
+                        d = jsonutils.jsonToDict(i)
+                        if "lines" in d:
+                                numLines = d["lines"]    
+                                addManyJunkRows(numLines)    
                 canvas.data.connection._receivedMessages.remove(i)
 
 def redrawAll():

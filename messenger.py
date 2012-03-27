@@ -63,6 +63,10 @@ class ClientConnect(object):
 		outFlo.write(msg + "\n")
 		outFlo.flush()
 		outFlo.close()
+	
+	def sendDict(self, d):
+		dictstr = json.dumps(d)
+		self.sendToServer(dictstr)
 
 #-----------------------------------------------------------------------
 
