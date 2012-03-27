@@ -473,8 +473,9 @@ def timerFired():
         for i in canvas.data.connection._receivedMessages:  
                 if jsonutils.isJSON(i):
                         d = jsonutils.jsonToDict(i)
-                        if "lines" in d:
-                                numLines = d["lines"]    
+                        print d
+                        if u"lines" in d:
+                                numLines = d[u"lines"]    
                                 addManyJunkRows(numLines)    
                 canvas.data.connection._receivedMessages.remove(i)
 

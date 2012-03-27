@@ -19,7 +19,9 @@ def isJSON(d):
 	return True
 
 def jsonToDict(d):
-	return json.loads(jsontext, object_hook=unicodeToASCII)
+	ret = json.loads(d, object_hook=unicodeToASCII)
+	print ret
+	return ret
 
 #By default, every string that json.loads() returns is in Unicode format. 
 #This can cause problems, so this function converts every Unicode object back to a string, recursively through the dict.
