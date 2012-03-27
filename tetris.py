@@ -1,7 +1,8 @@
 import sys
 import client
-
-client.run("metal a a across")
+print "Enter the room name:", 
+roomName = raw_input()
+client.run(roomName)
 
 
 '''
