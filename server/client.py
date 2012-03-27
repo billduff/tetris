@@ -24,7 +24,7 @@ class ClientReceiveThread(Thread):
 
 	def run(self):
 		print 'Listening for new messages from server'
-		
+
 		inFlo = self._sock.makefile('r')
 
 		while True:
@@ -32,42 +32,46 @@ class ClientReceiveThread(Thread):
 			if not line:
 				break
 			self._receivedMessages.append(line)
-			
+
 		inFlo.close()
 		print 'Exiting thread'
-						
-def connectToServer(serverip):
 
-	try:
-		host = ".".join([str(i) for i in serverip])
+class ClientConnect(object):
+	def __init__(self, serverip):
+		self._serverip = serverip
+		self.connectToServer()
 
-		sock = socket(AF_INET, SOCK_STREAM)
-		sock.connect((host, port))
-		print 'Client IP addr and port:', sock.getsockname()
-		print 'Server IP addr and port:', sock.getpeername()
+	def connectToServer(self):
+		try:
+			host = ".".join([str(i) for i in self._serverip])
 
-		clientReceiveThread = ClientReceiveThread(sock)
-		clientReceiveThread.start()
+			sock = socket(AF_INET, SOCK_STREAM)
+			sock.connect((host, port))
+			print 'Client IP addr and port:', sock.getsockname()
+			print 'Server IP addr and port:', sock.getpeername()
 
-		return (clientReceiveThread, sock)
+			clientReceiveThread = ClientReceiveThread(sock)
+			clientReceiveThread.start()
 
-	except Exception, e:
-		print e
+			self._receivedMessages = clientReceiveThread._receivedMessages
+			self._sock = sock
+		except Exception, e:
+			print e
 
-def sendToServer(sock, msg):
-	outFlo = sock.makefile(mode='w')
-	outFlo.write(msg)
-	outFlo.flush()
-	outFlo.close()
+	def sendToServer(self, msg):
+		outFlo = self._sock.makefile(mode='w')
+		outFlo.write(msg)
+		outFlo.flush()
+		outFlo.close()
 
 #-----------------------------------------------------------------------
 
 if __name__ == '__main__':
 	import time
-	(crecv, sock) = connectToServer([127,0,0,1])
+	obj = ClientConnect([127,0,0,1])
 	i = 0
 	while True:
 		i += 1
 		time.sleep(1)
-		sendToServer(sock,str(i) + "\n")
-		print crecv._receivedMessages
+		obj.sendToServer(str(i) + "\n")
+		print obj._receivedMessages
