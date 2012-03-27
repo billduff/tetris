@@ -53,10 +53,7 @@ def restart():
     canvas.data.heldPieceColor = None
     canvas.data.nextPiece = None
     canvas.data.nextPieceColor = None
-    canvas.data.shadowPiece = None
     canvas.data.shadowPieceColor = "white"
-    canvas.data.shadowPieceCol = 0
-    canvas.data.shadowPieceRow = 0
     newNextPiece()
     newFallingPiece()
 
@@ -111,7 +108,6 @@ def newFallingPiece():
     #to compensate for it being off to the right
     canvas.data.fallingPieceCol -= canvas.data.fallingPieceCol/2
     canvas.data.fallingPieceRotation = 0
-    canvas.data.shadowPiece = canvas.data.fallingPiece
     
 def drawFallingPiece():
     for row in xrange(len(canvas.data.fallingPiece)):
@@ -359,10 +355,10 @@ def drawShadow():
         #determine where the shadow piece should go
         canvas.data.shadowPiece = canvas.data.fallingPiece
         canvas.data.shadowPieceRow = canvas.data.fallingPieceRow
+        canvas.data.shadowPieceCol = canvas.data.fallingPieceCol
         while(shadowPieceIsLegal() == True):
             canvas.data.shadowPieceRow += 1
         canvas.data.shadowPieceRow -= 1
-        canvas.data.shadowPieceCol = canvas.data.fallingPieceCol
         #draw it
         for row in xrange(len(canvas.data.shadowPiece)):
             for col in xrange(len(canvas.data.shadowPiece[0])):
