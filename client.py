@@ -1,6 +1,8 @@
 from Tkinter import *
 import random
 import fileinput
+import server/messenger
+import server/iputils
 
 standardDelay = 600
 
@@ -339,7 +341,7 @@ def removeFullRows():
         for element in xrange(len(canvas.data.board[0])):
             canvas.data.board[fillRow][element] = "#1C2124"
     canvas.data.score += int(fullRowCount**2)*100
-    #connection.sendMessage("LINES:"+fullRowCount)
+    canvas.data.connection.sendMessage("LINES:"+fullRowCount)
 
 #remakes the game at it current position evertime it is redrawn
 def drawGame():
@@ -423,7 +425,7 @@ def keyPressed(event):
         
 def keyReleased(event):
     if(event.keysym == "Down"):
-            canvas.data.delay = standardDelay
+        canvas.data.delay = standardDelay
 
 def timerFired():
     if(canvas.data.isGameOver == False):
@@ -451,8 +453,11 @@ def redrawAll():
     drawNext()
 
 # to create the root and canvas
-def run(rows,cols):
+def run(room_name):
+    rows = 20
+    cols = 10
     global canvas
+    canvas.data.connection = ClientConnect(iputils.wordsToIP(room_name))
     root = Tk()
     canvas = Canvas(root, width = cols*20 + 140, height = rows*20 + 40)
     canvas.pack()
@@ -467,5 +472,3 @@ def run(rows,cols):
     root.bind("<KeyPress>", keyPressed)
     root.bind("<KeyRelease>", keyReleased)
     root.mainloop()
-    
-run(20,10)
