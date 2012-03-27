@@ -62,9 +62,7 @@ class ServerThread(Thread):
 def blastMessage(newMsg, exceptThread):
 	for client in connectionThreads:
 		if client != exceptThread:
-			msg = json.dumps(newMsg)
-			print msg
-			client.sendMsg(msg)
+			client.sendMsg(newMsg)
 
 def main(argv):
 
