@@ -332,18 +332,36 @@ def removeFullRows():
     newRow = rows-1
     fullRowCount = 0
     for oldRow in xrange(rows-1,-1,-1):
-        if(canvas.data.board[oldRow].count("#1C2124") != 0):
+        if(canvas.data.board[oldRow].count(canvas.data.emptyColor) != 0):
             copyRow(oldRow,newRow)
             newRow -= 1
         else:
             fullRowCount += 1
     for fillRow in xrange(newRow,-1,-1):
         for element in xrange(len(canvas.data.board[0])):
-            canvas.data.board[fillRow][element] = "#1C2124"
+            canvas.data.board[fillRow][element] = canvas.data.emptyColor
             
     if fullRowCount != 0:
-		canvas.data.score += int(fullRowCount**2)*100
-		canvas.data.connection.sendToServer("LINES:"+str(fullRowCount))
+        canvas.data.score += int(fullRowCount**2)*100
+        canvas.data.connection.sendToServer("LINES:"+str(fullRowCount))
+
+def addManyJunkRows(rows):
+    for i in xrange(rows):
+        addJunkRow()
+    
+def addJunkRow():
+    # first check if we have been KO'd
+    topRowEmpty = true
+    for c in xrange(canvas.data.cols):
+        if canvas.data.board[canvas.data.rows-1][c] != canvas.data.emptyColor:
+            topRowEmpty = false
+            break
+    if not topRowEmpty:
+        canvas.data.isGameOver = True
+    else:
+        newJunkRow = ([canvas.data.emptyColor] * cols)
+        canvas.data.board.pop(0)
+        canvas.data.board.append(newJunkRow)
 
 #remakes the game at it current position evertime it is redrawn
 def drawGame():
