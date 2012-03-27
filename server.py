@@ -53,7 +53,6 @@ def blastMessage(newMsg):
     for client in connectionThreads:
         (t, addr, msg) = newMsg
         (addr, port) = addr
-        msg = str(t) + " " +  addr + " " + msg
         client.sendMsg(msg)
 
 def main(argv):
