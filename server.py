@@ -18,6 +18,16 @@ config = ConfigParser.ConfigParser()
 config.read("tetrisrc.conf")
 
 port = int(config.get("configvalues","port"))
+dialogbox = bool(config.get("configvalues", "serverdialogbox"))
+if dialogbox == True:
+    from Tkinter import *
+    import tkSimpleDialog
+    class RoomNameDialog(tkSimpleDialog.Dialog):
+        def __init__(self,parent,room_name,title=None):
+            self.room_name = room_name
+            tkSimpleDialog.Dialog.__init__(self,parent,title)
+        def body(self, master):
+            Label(master, text="The room name is: "+self.room_name).grid(row=0)
 
 BACKLOG = 5
 chatLog = [] # This will be an array of tuples in the form (time, address, msg) 
@@ -65,18 +75,22 @@ def blastMessage(newMsg, exceptThread):
 			client.sendMsg(newMsg)
 
 def main(argv):
-
-	myIP = iputils.getMyIP()
-	print "Room name:", iputils.ipToWords(myIP)
+    myIP = iputils.getMyIP()
+    room_name = iputils.ipToWords(myIP)
+    print "Room name:", room_name
+    if dialogbox == True:
+        root = Tk()
+        d = RoomNameDialog(root, room_name, "Room Name")
+        root.destroy()
 	
-	try:
+    try:
 		serverSock = socket(AF_INET, SOCK_STREAM)
 		print 'Opened server socket'
 		serverSock.bind(('', port))
 		print 'Bound server socket to port'
 		serverSock.listen(BACKLOG)
 		print 'Listening'
-
+        
 		while True:
 			sock, address = serverSock.accept()
 			print 'Accepted connection, opened socket'
@@ -84,9 +98,9 @@ def main(argv):
 			serverThread.start();
 			serverThread.sendMsg("Welcome to the LAN party!")
 			connectionThreads.append(serverThread) # Add thread to list
-
-	except Exception, e:
-		print e
+    
+    except Exception, e:
+        print e
 
 #-----------------------------------------------------------------------
 

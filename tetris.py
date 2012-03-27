@@ -523,14 +523,15 @@ def run():
         cols = 10
         global canvas
         root = Tk()
-        d1 = ServerDialog(root)
+        
+        d1 = ServerDialog(root, "Server/Client Options")
         startclient = d1.cb_client_bool
         startserver = d1.cb_server_bool
         if startserver == True:
             subprocess.Popen('./server.py', shell=True)
         if startclient == False:
             sys.exit()
-        d2 = RoomDialog(root)
+        d2 = RoomDialog(root, "Enter Room Name")
         room_name = d2.result
         
         canvas = Canvas(root, width = cols*20 + 140, height = rows*20 + 40)
