@@ -361,8 +361,8 @@ def keyPressed(event):
             dcol = 1
             moveFallingPiece(drow,dcol)
         elif(event.keysym == "Down"):
-            if canvas.data.delay == standardDelay:
-                canvas.data.delay = standardDelay / 12
+            if canvas.data.delay == standardDelay :
+                canvas.data.delay = 60
                 canvas.after_cancel(canvas.data.timerId)
                 timerFired()
         elif(event.keysym == "Up"):
