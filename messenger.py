@@ -5,7 +5,7 @@
 #-----------------------------------------------------------------------
 
 from sys import exit, argv, stdin
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from threading import Thread
 import sys
 import ConfigParser
@@ -37,12 +37,13 @@ class ClientReceiveThread(Thread):
 			
 			print line
 		
-		quitThread()
+		self.quitThread()
 	
 	def quitThread(self):
 		self._inFlo.close()
 		self._sock.close()
-		print 'Server listening thread can quit now...'
+		print 'Quitting listener thread...'
+		self._Thread__stop()
     
 class ClientConnect(object):
 	def __init__(self, serverip):
@@ -54,6 +55,7 @@ class ClientConnect(object):
 			host = ".".join([str(i) for i in self._serverip])
 
 			sock = socket(AF_INET, SOCK_STREAM)
+			sock.setsockopt(SOL_SOCKET,SO_REUSEADDR,1)
 			sock.connect((host, port))
 			print 'Client IP addr and port:', sock.getsockname()
 			print 'Server IP addr and port:', sock.getpeername()
@@ -79,7 +81,6 @@ class ClientConnect(object):
 	def quitThread(self):
 		self._sock.close()
 		self._clientReceiveThread.quitThread()
-		self._clientReceiveThread._Thread__stop()
 		print "Quit server listener"
 
 #-----------------------------------------------------------------------
