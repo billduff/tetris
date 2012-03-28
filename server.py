@@ -4,7 +4,7 @@
 # server.py
 #-----------------------------------------------------------------------
 
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from threading import Thread
 from time import time
 import sys
@@ -66,7 +66,8 @@ class ServerThread(Thread):
         self._sock.close()
         print 'Closed socket'        
         connectionThreads.remove(self) # Remove self from the list of threads
-        print 'Server thread can exit now...'
+        print "Quitting this server thread..."
+        self._Thread__stop()
         
 #-----------------------------------------------------------------------
 def blastMessage(newMsg, exceptThread):
@@ -79,7 +80,6 @@ def quitThreads(signal, frame):
     for client in connectionThreads:
         client.quitThread()
         print "Quit a server thread..."
-        client._Thread__stop()
     print "Quit all threads..."
     sys.exit()
 
@@ -94,6 +94,7 @@ def main():
     
     try:
         serverSock = socket(AF_INET, SOCK_STREAM)
+        serverSock.setsockopt(SOL_SOCKET,SO_REUSEADDR,1)
         print 'Opened server socket'
         serverSock.bind(('', port))
         print 'Bound server socket to port'
