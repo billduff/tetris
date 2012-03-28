@@ -1,17 +1,18 @@
 Multiplayer tetris written in python that allows local network play. 
 Visit nicepipesbill.tumblr.com for more information.
 
-Use run "python Tetris.py" with python installed to play. 
+To play, install python, then double click on the "tetris.py" file in the downloaded folder.
+In Linux and Mac, you may have to click "Run" when a dialog box appears.
 
 See "known_problems.txt" for a list of known bugs. 
 
-Authors: 
+Authors:
 Siddharth Dhulipalla
 Eddie Nolan
 Neal Bhasin
 Bill Duff
 David Mehrle
 
-Testers/Contributers:
+Testers/Contributors:
 Sannidhi Srinvasan
 Elena Karras
