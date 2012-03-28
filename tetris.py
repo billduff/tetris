@@ -85,7 +85,7 @@ def drawBoard():
 	for row in xrange(rows-5):
 		for col in xrange(cols):
 			drawCell(20+col*20, 20+row*20,canvas.data.board[row][col])
-	if(canvas.data.isGameOver == True):
+	if canvas.data.isGameOver:
 		quoteNum = random.randint(0, len(canvas.quotes) - 1)
 		canvas.create_text(((cols*20+20)/2), (((rows*20)+20)/2),
 			text = "Game Over\n", fill = "white",
@@ -121,7 +121,7 @@ def newFallingPiece():
 def drawFallingPiece():
 	for row in xrange(len(canvas.data.fallingPiece)):
 		for col in xrange(len(canvas.data.fallingPiece[0])):
-			if (canvas.data.fallingPiece[row][col] == True):
+			if canvas.data.fallingPiece[row][col] == True:
 				drawCell(20+(canvas.data.fallingPieceCol+col)*20,
 								 20+(canvas.data.fallingPieceRow+row)*20,
 								 canvas.data.fallingPieceColor)
@@ -129,14 +129,14 @@ def drawFallingPiece():
 def fallingPieceIsLegal():
 	for row in xrange(len(canvas.data.fallingPiece)):
 		for col in xrange(len(canvas.data.fallingPiece[0])):
-			if(canvas.data.fallingPiece[row][col] == True):
-				if(((canvas.data.fallingPieceRow+row) < 0) or
-				   ((canvas.data.fallingPieceCol+col) < 0) or
-				   ((canvas.data.fallingPieceRow+row) >= len(canvas.data.board)) or
-				   ((canvas.data.fallingPieceCol+col) >= len(canvas.data.board[0]))):
+			if canvas.data.fallingPiece[row][col] == True:
+				if canvas.data.fallingPieceRow+row < 0 or
+				   canvas.data.fallingPieceCol+col < 0 or
+				   canvas.data.fallingPieceRow+row >= len(canvas.data.board) or
+				   canvas.data.fallingPieceCol+col >= len(canvas.data.board[0]):
 					return False
-				elif(canvas.data.board[(canvas.data.fallingPieceRow+row)]
-						              [(canvas.data.fallingPieceCol+col)] != canvas.data.emptyColor):
+				elif canvas.data.board[(canvas.data.fallingPieceRow+row)]
+						              [(canvas.data.fallingPieceCol+col)] != canvas.data.emptyColor:
 					return False
 	return True
 
@@ -144,21 +144,21 @@ def fallingPieceIsLegal():
 def shadowPieceIsLegal():
 	for row in xrange(len(canvas.data.shadowPiece)):
 		for col in xrange(len(canvas.data.shadowPiece[0])):
-			if(canvas.data.shadowPiece[row][col] == True):
-				if(((canvas.data.shadowPieceRow+row) < 0) or
-				   ((canvas.data.shadowPieceCol+col) < 0) or
-				   ((canvas.data.shadowPieceRow+row) >=	len(canvas.data.board)) or
-				   ((canvas.data.shadowPieceCol+col) >= len(canvas.data.board[0]))):
+			if canvas.data.shadowPiece[row][col] == True:
+				if canvas.data.shadowPieceRow+row) < 0 or
+				   canvas.data.shadowPieceCol+col) < 0 or
+				   canvas.data.shadowPieceRow+row) >=	len(canvas.data.board) or
+				   canvas.data.shadowPieceCol+col) >= len(canvas.data.board[0]):
 					return False
-				elif(canvas.data.board[(canvas.data.shadowPieceRow+row)]
-									  [(canvas.data.shadowPieceCol+col)] != canvas.data.emptyColor):
+				elif canvas.data.board[(canvas.data.shadowPieceRow+row)]
+									  [(canvas.data.shadowPieceCol+col)] != canvas.data.emptyColor:
 					return False
 	return True
 
 def moveFallingPiece(drow,dcol):
 	canvas.data.fallingPieceRow += drow
 	canvas.data.fallingPieceCol += dcol
-	if(fallingPieceIsLegal() == False):
+	if not fallingPieceIsLegal():
 		canvas.data.fallingPieceRow -= drow
 		canvas.data.fallingPieceCol -= dcol
 		return False
@@ -187,65 +187,65 @@ def fallingPieceCenter():
 	zPiece2 = [[False, True],[True,True],[True, False]]
 	#I pieces
 	rcAdd = lambda row,col: (canvas.data.fallingPieceRow+row, canvas.data.fallingPieceCol+col) 
-	if(canvas.data.fallingPiece == iPiece1):
-		if (canvas.data.fallingPieceRotation / 2) == 0:
-			return	rcAdd(1,2)
+	if canvas.data.fallingPiece == iPiece1:
+		if canvas.data.fallingPieceRotation / 2 == 0:
+			return rcAdd(1,2)
 		else:
-			return	rcAdd(1,3)
-	elif(canvas.data.fallingPiece == iPiece2):
-		if (canvas.data.fallingPieceRotation / 2) == 0:
-			return	rcAdd(3,1)
+			return rcAdd(1,3)
+	elif canvas.data.fallingPiece == iPiece2:
+		if canvas.data.fallingPieceRotation / 2 == 0:
+			return rcAdd(3,1)
 		else:
-			return	rcAdd(2,1)
+			return rcAdd(2,1)
 	#J Pieces
-	elif(canvas.data.fallingPiece == jPiece1): 
+	elif canvas.data.fallingPiece == jPiece1: 
 		return rcAdd(1,1)
-	elif(canvas.data.fallingPiece == jPiece2): 
+	elif canvas.data.fallingPiece == jPiece2: 
 		return rcAdd(1,1)
-	elif(canvas.data.fallingPiece == jPiece3): 
+	elif canvas.data.fallingPiece == jPiece3: 
 		return rcAdd(0,1)
-	elif(canvas.data.fallingPiece == jPiece4):
+	elif canvas.data.fallingPiece == jPiece4:
 		return rcAdd(1,0)
 	# L pieces
-	elif(canvas.data.fallingPiece == lPiece1): 
+	elif canvas.data.fallingPiece == lPiece1: 
 		return rcAdd(1,1)
-	elif(canvas.data.fallingPiece == lPiece2): 
+	elif canvas.data.fallingPiece == lPiece2: 
 		return rcAdd(1,0)
-	elif(canvas.data.fallingPiece == lPiece3): 
+	elif canvas.data.fallingPiece == lPiece3: 
 		return rcAdd(0,1)
-	elif(canvas.data.fallingPiece == lPiece4): 
+	elif canvas.data.fallingPiece == lPiece4: 
 		return rcAdd(1,1)
 	#O Pieces
-	elif(canvas.data.fallingPiece == oPiece): 
+	elif canvas.data.fallingPiece == oPiece: 
 		return rcAdd(0,0)
 	#S Pieces
-	elif(canvas.data.fallingPiece == sPiece1):
-		if (canvas.data.fallingPieceRotation / 2) == 0:
+	elif canvas.data.fallingPiece == sPiece1:
+		if canvas.data.fallingPieceRotation / 2 == 0:
 			return rcAdd(0,1)
 		else:
 			return rcAdd(1,1)
-	elif(canvas.data.fallingPiece == sPiece2):
-		if (canvas.data.fallingPieceRotation / 2) == 0:
+	elif canvas.data.fallingPiece == sPiece2:
+		if canvas.data.fallingPieceRotation / 2 == 0:
 			return rcAdd(1,0)
 		else:
 			return rcAdd(1,1)
 	#T Pieces
-	elif(canvas.data.fallingPiece == tPiece1): 
+	elif canvas.data.fallingPiece == tPiece1: 
 		return rcAdd(1,1)
-	elif(canvas.data.fallingPiece == tPiece2): 
+	elif canvas.data.fallingPiece == tPiece2: 
 		return rcAdd(1,0)
-	elif(canvas.data.fallingPiece == tPiece3): 
+	elif canvas.data.fallingPiece == tPiece3: 
 		return rcAdd(0,1)
-	elif(canvas.data.fallingPiece == tPiece4): 
+	elif canvas.data.fallingPiece == tPiece4: 
 		return rcAdd(1,1)
 	#Z Pieces
-	elif(canvas.data.fallingPiece == zPiece1):
-		if (canvas.data.fallingPieceRotation / 2) == 0:
+	elif canvas.data.fallingPiece == zPiece1:
+		if canvas.data.fallingPieceRotation / 2 == 0:
 			return rcAdd(0,1)
 		else:
 			return rcAdd(1,1)
-	elif(canvas.data.fallingPiece == zPiece2):
-		if (canvas.data.fallingPieceRotation / 2) == 0:
+	elif canvas.data.fallingPiece == zPiece2:
+		if canvas.data.fallingPieceRotation / 2 == 0:
 			return rcAdd(0,1)
 		else:
 			return rcAdd(1,1)
@@ -293,7 +293,7 @@ def dropPiece():
 
 def holdPiece():
 	if canvas.data.canHold:
-		if (canvas.data.heldPiece == None):
+		if canvas.data.heldPiece == None:
 			canvas.data.heldPiece = canvas.data.fallingPiece
 			canvas.data.heldPieceColor = canvas.data.fallingPieceColor
 			newNextPiece()
@@ -317,7 +317,7 @@ def placeFallingPiece():
 	board = canvas.data.board
 	for row in xrange(len(canvas.data.fallingPiece)):
 		for col in xrange(len(canvas.data.fallingPiece[0])):
-			if (canvas.data.fallingPiece[row][col] == True):
+			if canvas.data.fallingPiece[row][col] == True:
 					board[(fallingPieceRow+row)][(fallingPieceCol+col)] = color
 					canvas.data.board = board
 
@@ -331,7 +331,7 @@ def removeFullRows():
 	newRow = rows-1
 	fullRowCount = 0
 	for oldRow in xrange(rows-1,-1,-1):
-		if(canvas.data.board[oldRow].count(canvas.data.emptyColor) != 0):
+		if canvas.data.board[oldRow].count(canvas.data.emptyColor) != 0:
 			copyRow(oldRow,newRow)
 			newRow -= 1
 		else:
@@ -370,7 +370,7 @@ def drawGame():
 
 #draw the imaginary piece where a drop would place current falling piece
 def drawShadow():
-	if(not canvas.data.isGameOver):
+	if not canvas.data.isGameOver:
 		#determine where the shadow piece should go
 		canvas.data.shadowPiece = canvas.data.fallingPiece
 		canvas.data.shadowPieceRow = canvas.data.fallingPieceRow
@@ -390,64 +390,64 @@ def drawScore():
 		
 def drawHeld():
 	canvas.create_text((canvas.data.cols*28), 340,
-											text = "Held Piece:",
-											fill = "white", font = "Courier 16 bold")
-	if(canvas.data.heldPiece != None):
+						text = "Held Piece:",
+						fill = "white", font = "Courier 16 bold")
+	if canvas.data.heldPiece != None:
 		for row in xrange(len(canvas.data.heldPiece)):
 			for col in xrange(len(canvas.data.heldPiece[0])):
-				if (canvas.data.heldPiece[row][col] == True):
-						drawCell(30+(canvas.data.cols+col)*20,360+(row)*20, canvas.data.heldPieceColor)
+				if canvas.data.heldPiece[row][col] == True:
+					drawCell(30+(canvas.data.cols+col)*20,360+(row)*20, canvas.data.heldPieceColor)
 										
 def drawNext():
 	canvas.create_text((canvas.data.cols*28), 40,
 											text = "Next Piece:",
 											fill = "white", font = "Courier 16 bold")
-	if(canvas.data.nextPiece != None):
+	if canvas.data.nextPiece != None:
 		for row in xrange(len(canvas.data.nextPiece)):
 			for col in xrange(len(canvas.data.nextPiece[0])):
-				if (canvas.data.nextPiece[row][col] == True):
+				if canvas.data.nextPiece[row][col] == True:
 					drawCell(30+(canvas.data.cols+col)*20,60+(row)*20, canvas.data.nextPieceColor)
 
 #initiates the moving and rotation of the falling piece 
 def keyPressed(event):
-	if(not canvas.data.isGameOver and not canvas.data.spacePressed):
+	if not canvas.data.isGameOver and not canvas.data.spacePressed:
 		drow = 0
 		dcol = 0
-		if(event.keysym == "Left"):
+		if event.keysym == "Left":
 			dcol = -1
 			moveFallingPiece(drow,dcol)
-		elif(event.keysym == "Right"):
+		elif event.keysym == "Right":
 			dcol = 1
 			moveFallingPiece(drow,dcol)
-		elif(event.keysym == "Down"):
+		elif event.keysym == "Down":
 			if canvas.data.delay == standardDelay :
 				canvas.data.delay = 60
 				canvas.after_cancel(canvas.data.timerId)
 				timerFired()
-		elif(event.keysym == "Up"):
+		elif event.keysym == "Up":
 			rotateFallingPiece()
-		elif(event.keysym == "space"):
+		elif event.keysym == "space":
 			dropPiece()
-		elif even.keysum in ["Shift_L", "Shift_R", "z"] or event.keycode in [131074, 131076]:
+		elif event.keysum in ["Shift_L", "Shift_R", "z"] or event.keycode in [131074, 131076]:
 			holdPiece()
 		redrawAll()
-	if(event.char == "r"):
+	if event.char == "r":
 		restart()
 	if event.char == "q":
 		quitGame()
 				
 def keyReleased(event):
-	if(event.keysym == "Down"):
+	if event.keysym == "Down":
 		canvas.data.delay = standardDelay
 
 def timerFired():
-	if(canvas.data.isGameOver == False):
+	if not canvas.data.isGameOver:
 		movePossible = moveFallingPiece(1, 0)
-		if(movePossible == True):
+		if movePossible:
 			canvas.data.score += 1
 			canvas.data.Moved = True
 		else:
-			if(not canvas.data.Moved):
+			if not canvas.data.Moved:
 				canvas.data.isGameOver = True
 			placeFallingPiece()
 			newFallingPiece()
@@ -522,11 +522,11 @@ def run():
 	root.canvas = canvas.canvas = canvas
 	class Struct: pass
 	canvas.data = Struct()
-	if startserver == True:
+	if startserver:
 		canvas.data.serverprocess = subprocess.Popen('./server.py', shell=True)
 	else:
 		canvas.data.serverprocess = None
-	if startclient == False:
+	if not startclient:
 		sys.exit()
 	
 	d2 = RoomDialog(root, "Enter Room Name")
