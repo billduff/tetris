@@ -131,12 +131,12 @@ def fallingPieceIsLegal():
 		for col in xrange(len(canvas.data.fallingPiece[0])):
 			if canvas.data.fallingPiece[row][col] == True:
 				if (canvas.data.fallingPieceRow+row < 0 or
-				    canvas.data.fallingPieceCol+col < 0 or
-				    canvas.data.fallingPieceRow+row >= len(canvas.data.board) or
-				    canvas.data.fallingPieceCol+col >= len(canvas.data.board[0])):
+					canvas.data.fallingPieceCol+col < 0 or
+					canvas.data.fallingPieceRow+row >= len(canvas.data.board) or
+					canvas.data.fallingPieceCol+col >= len(canvas.data.board[0])):
 					return False
 				elif (canvas.data.board[(canvas.data.fallingPieceRow+row)]
-						               [(canvas.data.fallingPieceCol+col)] != canvas.data.emptyColor):
+									   [(canvas.data.fallingPieceCol+col)] != canvas.data.emptyColor):
 					return False
 	return True
 
@@ -146,9 +146,9 @@ def shadowPieceIsLegal():
 		for col in xrange(len(canvas.data.shadowPiece[0])):
 			if canvas.data.shadowPiece[row][col] == True:
 				if (canvas.data.shadowPieceRow+row < 0 or
-				    canvas.data.shadowPieceCol+col < 0 or
-				    canvas.data.shadowPieceRow+row >=	len(canvas.data.board) or
-				    canvas.data.shadowPieceCol+col >= len(canvas.data.board[0])):
+					canvas.data.shadowPieceCol+col < 0 or
+					canvas.data.shadowPieceRow+row >=	len(canvas.data.board) or
+					canvas.data.shadowPieceCol+col >= len(canvas.data.board[0])):
 					return False
 				elif (canvas.data.board[(canvas.data.shadowPieceRow+row)]
 									   [(canvas.data.shadowPieceCol+col)] != canvas.data.emptyColor):
@@ -512,6 +512,10 @@ class RoomDialog(tkSimpleDialog.Dialog):
 		roomname = self.e1.get()
 		self.result = roomname
 
+class DisplayRoomNameDialog(tkSimpleDialog.Dialog):
+	def body(self, master):
+		Label(master, text="After you start the server, press OK to begin the game.").grid(row=0)
+
 # to create the root and canvas
 def run():
 	rows = 25
@@ -537,8 +541,13 @@ def run():
 	if not startclient:
 		sys.exit()
 	
-	d2 = RoomDialog(root, "Enter Room Name")
-	room_name = d2.result
+	if not startserver:
+		d2 = RoomDialog(root, "Enter Room Name")
+		room_name = d2.result
+	else:
+		room_name = iputils.ipToWords(iputils.getMyIP())
+		d2 = DisplayRoomNameDialog(root, "Room Name")
+	
 	canvas.data.connection = messenger.ClientConnect(iputils.wordsToIP(room_name))
 	
 	canvas.data.rows = rows
