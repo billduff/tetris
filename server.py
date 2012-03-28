@@ -54,7 +54,7 @@ class ServerThread(Thread):
 
             blastMessage(line, self) # Send out new message to all connected clients
 
-        quitThread()
+        self.quitThread()
         
     def sendMsg(self, message):
         outFlo = self._sock.makefile(mode='w')
