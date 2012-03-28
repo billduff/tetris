@@ -36,7 +36,7 @@ def init():
 	#the colors of each of the tetris pieces are assigned in the same order in
 	#another list called tetrisPiecesColors
 	tetrisPieceColors = ["cyan", "blue", "orange", "yellow", "green", "#F4E",
-											 "red"]
+						 "red"]
 	canvas.data.tetrisPieces = tetrisPieces
 	canvas.data.tetrisPieceColors = tetrisPieceColors
 	restart()
@@ -430,10 +430,11 @@ def keyPressed(event):
 		elif event.keysym in ["Shift_L", "Shift_R", "z"] or event.keycode in [131074, 131076]:
 			holdPiece()
 		redrawAll()
-	if event.char == "r":
-		restart()
 	if event.char == "q":
 		quitGame()
+    if event.char == "r" and canvas.data.ishost:
+        canvas.data.connection.sendDict({"control":"restart"})
+        
 				
 def keyReleased(event):
 	if event.keysym == "Down":
@@ -464,7 +465,10 @@ def timerFired():
 			#print d
 			if "lines" in d:
 				numLines = d["lines"]    
-				addManyJunkRows(numLines)    
+				addManyJunkRows(numLines)
+            if "control" in d:
+                if d["control"] == "restart":
+                    restart()
 		canvas.data.connection._receivedMessages.remove(i)
 
 def quitGame():
@@ -535,6 +539,7 @@ def run():
 	if startserver:
 		proc = subprocess.Popen('./server.py')
 		canvas.data.serverpid = proc.pid
+        canvas.data.ishost = True
 	else:
 		canvas.data.serverpid = None
 	if not startclient:
@@ -543,6 +548,7 @@ def run():
 	if not startserver:
 		d2 = RoomDialog(root, "Enter Room Name")
 		room_name = d2.result
+        canvas.data.ishost = False
 	else:
 		room_name = iputils.ipToWords(iputils.getMyIP())
 		d2 = DisplayRoomNameDialog(root, "Room Name")
