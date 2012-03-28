@@ -130,13 +130,13 @@ def fallingPieceIsLegal():
 	for row in xrange(len(canvas.data.fallingPiece)):
 		for col in xrange(len(canvas.data.fallingPiece[0])):
 			if canvas.data.fallingPiece[row][col] == True:
-				if canvas.data.fallingPieceRow+row < 0 or
-				   canvas.data.fallingPieceCol+col < 0 or
-				   canvas.data.fallingPieceRow+row >= len(canvas.data.board) or
-				   canvas.data.fallingPieceCol+col >= len(canvas.data.board[0]):
+				if (canvas.data.fallingPieceRow+row < 0 or
+				    canvas.data.fallingPieceCol+col < 0 or
+				    canvas.data.fallingPieceRow+row >= len(canvas.data.board) or
+				    canvas.data.fallingPieceCol+col >= len(canvas.data.board[0])):
 					return False
-				elif canvas.data.board[(canvas.data.fallingPieceRow+row)]
-						              [(canvas.data.fallingPieceCol+col)] != canvas.data.emptyColor:
+				elif (canvas.data.board[(canvas.data.fallingPieceRow+row)]
+						               [(canvas.data.fallingPieceCol+col)] != canvas.data.emptyColor):
 					return False
 	return True
 
@@ -145,13 +145,13 @@ def shadowPieceIsLegal():
 	for row in xrange(len(canvas.data.shadowPiece)):
 		for col in xrange(len(canvas.data.shadowPiece[0])):
 			if canvas.data.shadowPiece[row][col] == True:
-				if canvas.data.shadowPieceRow+row) < 0 or
-				   canvas.data.shadowPieceCol+col) < 0 or
-				   canvas.data.shadowPieceRow+row) >=	len(canvas.data.board) or
-				   canvas.data.shadowPieceCol+col) >= len(canvas.data.board[0]):
+				if (canvas.data.shadowPieceRow+row < 0 or
+				    canvas.data.shadowPieceCol+col < 0 or
+				    canvas.data.shadowPieceRow+row >=	len(canvas.data.board) or
+				    canvas.data.shadowPieceCol+col >= len(canvas.data.board[0])):
 					return False
-				elif canvas.data.board[(canvas.data.shadowPieceRow+row)]
-									  [(canvas.data.shadowPieceCol+col)] != canvas.data.emptyColor:
+				elif (canvas.data.board[(canvas.data.shadowPieceRow+row)]
+									   [(canvas.data.shadowPieceCol+col)] != canvas.data.emptyColor):
 					return False
 	return True
 
@@ -428,7 +428,7 @@ def keyPressed(event):
 			rotateFallingPiece()
 		elif event.keysym == "space":
 			dropPiece()
-		elif event.keysum in ["Shift_L", "Shift_R", "z"] or event.keycode in [131074, 131076]:
+		elif event.keysym in ["Shift_L", "Shift_R", "z"] or event.keycode in [131074, 131076]:
 			holdPiece()
 		redrawAll()
 	if event.char == "r":
