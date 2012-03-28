@@ -81,7 +81,7 @@ def drawBoard():
 	rows = canvas.data.rows
 	cols = canvas.data.cols
 	removeFullRows()
-	for row in xrange(rows-5):
+	for row in xrange(rows):
 		for col in xrange(cols):
 			drawCell(20+col*20, 20+row*20,canvas.data.board[row][col])
 	if canvas.data.isGameOver:
@@ -517,7 +517,7 @@ class DisplayRoomNameDialog(tkSimpleDialog.Dialog):
 
 # to create the root and canvas
 def run():
-	rows = 25
+	rows = 20
 	cols = 10
 	global root
 	root = Tk()
