@@ -20,17 +20,17 @@ def init():
 	#truth-value of if that cell contains the piece
 	iPiece = [[True,True,True,True]]
 	jPiece = [[True,False,False],
-			  [True,True,True]]
+		  [True,True,True]]
 	lPiece = [[False,False,True],
-			  [True,True,True]]
+		  [True,True,True]]
 	oPiece = [[True,True],
-			  [True,True]]
+		  [True,True]]
 	sPiece = [[False,True,True],
-			  [True,True,False]]
+		  [True,True,False]]
 	tPiece = [[False,True,False],
-			  [True,True,True]]
+		  [True,True,True]]
 	zPiece = [[True,True,False],
-			  [False,True,True]]
+	          [False,True,True]]
 	#all the teris pieces are stored in a 3d list called tetrisPieces
 	tetrisPieces = [iPiece, jPiece, lPiece, oPiece, sPiece, tPiece, zPiece]
 	#the colors of each of the tetris pieces are assigned in the same order in
@@ -41,7 +41,7 @@ def init():
 	canvas.data.tetrisPieceColors = tetrisPieceColors
 	restart()
 	timerFired()
-		
+
 def restart():
 	#init the clean board
 	rows = canvas.data.rows
@@ -50,7 +50,7 @@ def restart():
 	canvas.data.emptyColor = "#1C2124"
 	board = [([canvas.data.emptyColor] * cols) for row in xrange(rows)]
 	canvas.data.board = board
-	
+
 	canvas.data.Moved = 0
 	canvas.data.isGameOver = False
 	canvas.data.score = 0
@@ -70,7 +70,7 @@ def getQuotes():
 	for line in fileinput.input("eddie_quotes.txt"):
 		canvas.quotes.append(line[:-1])
 
-#draws each cell in the grid    
+#draws each cell in the grid
 def drawCell(row,col,color):
 	#creates a border for the cell and the actual cell
 	canvas.create_rectangle(row, col, row+20, col+20, fill = "black")
@@ -98,14 +98,14 @@ def drawBoard():
 							width = (cols*20),
 							text = "\"" + canvas.quotes[quoteNum] + "\" - Eddie",
 							fill = "white", font = "Arial 12")
-   
+
 #to randomly chose a next piece, set its color and position it in the
-#middle of the top row         
+#middle of the top row
 def newNextPiece():
 	index = random.randint(0,6)
 	canvas.data.nextPiece = canvas.data.tetrisPieces[index]
 	canvas.data.nextPieceColor = canvas.data.tetrisPieceColors[index]
-						
+
 #choose the new falling piece to be the 'next piece'
 def newFallingPiece():
 	canvas.data.fallingPiece = canvas.data.nextPiece
@@ -116,7 +116,7 @@ def newFallingPiece():
 	#to compensate for it being off to the right
 	canvas.data.fallingPieceCol -= canvas.data.fallingPieceCol/2
 	canvas.data.fallingPieceRotation = 0
-		
+
 def drawFallingPiece():
 	for row in xrange(len(canvas.data.fallingPiece)):
 		for col in xrange(len(canvas.data.fallingPiece[0])):
@@ -162,7 +162,7 @@ def moveFallingPiece(drow,dcol):
 		canvas.data.fallingPieceCol -= dcol
 		return False
 	return True
-		 
+
 #Find the point of rotation for falling pieces
 def fallingPieceCenter():
 	iPiece1 = [[True,True,True,True]]
@@ -185,7 +185,7 @@ def fallingPieceCenter():
 	zPiece1 = [[True,True,False],[False,True,True]]
 	zPiece2 = [[False, True],[True,True],[True, False]]
 	#I pieces
-	rcAdd = lambda row,col: (canvas.data.fallingPieceRow+row, canvas.data.fallingPieceCol+col) 
+	rcAdd = lambda row,col: (canvas.data.fallingPieceRow+row, canvas.data.fallingPieceCol+col)
 	if canvas.data.fallingPiece == iPiece1:
 		if canvas.data.fallingPieceRotation / 2 == 0:
 			return rcAdd(1,2)
@@ -197,25 +197,25 @@ def fallingPieceCenter():
 		else:
 			return rcAdd(2,1)
 	#J Pieces
-	elif canvas.data.fallingPiece == jPiece1: 
+	elif canvas.data.fallingPiece == jPiece1:
 		return rcAdd(1,1)
-	elif canvas.data.fallingPiece == jPiece2: 
+	elif canvas.data.fallingPiece == jPiece2:
 		return rcAdd(1,1)
-	elif canvas.data.fallingPiece == jPiece3: 
+	elif canvas.data.fallingPiece == jPiece3:
 		return rcAdd(0,1)
 	elif canvas.data.fallingPiece == jPiece4:
 		return rcAdd(1,0)
 	# L pieces
-	elif canvas.data.fallingPiece == lPiece1: 
+	elif canvas.data.fallingPiece == lPiece1:
 		return rcAdd(1,1)
-	elif canvas.data.fallingPiece == lPiece2: 
+	elif canvas.data.fallingPiece == lPiece2:
 		return rcAdd(1,0)
-	elif canvas.data.fallingPiece == lPiece3: 
+	elif canvas.data.fallingPiece == lPiece3:
 		return rcAdd(0,1)
-	elif canvas.data.fallingPiece == lPiece4: 
+	elif canvas.data.fallingPiece == lPiece4:
 		return rcAdd(1,1)
 	#O Pieces
-	elif canvas.data.fallingPiece == oPiece: 
+	elif canvas.data.fallingPiece == oPiece:
 		return rcAdd(0,0)
 	#S Pieces
 	elif canvas.data.fallingPiece == sPiece1:
@@ -229,13 +229,13 @@ def fallingPieceCenter():
 		else:
 			return rcAdd(1,1)
 	#T Pieces
-	elif canvas.data.fallingPiece == tPiece1: 
+	elif canvas.data.fallingPiece == tPiece1:
 		return rcAdd(1,1)
-	elif canvas.data.fallingPiece == tPiece2: 
+	elif canvas.data.fallingPiece == tPiece2:
 		return rcAdd(1,0)
-	elif canvas.data.fallingPiece == tPiece3: 
+	elif canvas.data.fallingPiece == tPiece3:
 		return rcAdd(0,1)
-	elif canvas.data.fallingPiece == tPiece4: 
+	elif canvas.data.fallingPiece == tPiece4:
 		return rcAdd(1,1)
 	#Z Pieces
 	elif canvas.data.fallingPiece == zPiece1:
@@ -248,7 +248,7 @@ def fallingPieceCenter():
 			return rcAdd(0,1)
 		else:
 			return rcAdd(1,1)
-#Falling Piece Center    
+#Falling Piece Center
 
 def rotateFallingPiece():
 	fallingPiece = canvas.data.fallingPiece
@@ -257,13 +257,13 @@ def rotateFallingPiece():
 	newRows = oldCols
 	newCols = oldRows
 	rotatedFallingPiece = [([True] * newCols) for i in xrange(newRows)]
-	for row in xrange(oldRows-1,-1,-1): 
+	for row in xrange(oldRows-1,-1,-1):
 		for col in xrange(oldCols):
 			rotatedFallingPiece[col][oldRows-1-row] = fallingPiece[row][col]
-			#To change direction in which pieces rotate (ccw vs. cw): 
+			#To change direction in which pieces rotate (ccw vs. cw):
 			#(1) Change oldRows-1,-1,-1 to oldRows
-			#(2) Change oldCols to oldCols-1,-1,-1             
-			#(3) change [col][oldRows-1-row] to [oldCols-1-col][row] 
+			#(2) Change oldCols to oldCols-1,-1,-1
+			#(3) change [col][oldRows-1-row] to [oldCols-1-col][row]
 	(oldCenterRow,oldCenterCol) = fallingPieceCenter()
 	canvas.data.fallingPiece = rotatedFallingPiece
 	(newCenterRow,newCenterCol) = fallingPieceCenter()
@@ -324,7 +324,7 @@ def copyRow(oldRow,newRow):
 	for element in xrange(len(canvas.data.board[0])):
 		canvas.data.board[newRow][element] = canvas.data.board[oldRow][element]
 
-# clear rows 
+# clear rows
 def removeFullRows():
 	rows = canvas.data.rows
 	newRow = rows-1
@@ -338,22 +338,22 @@ def removeFullRows():
 	for fillRow in xrange(newRow,-1,-1):
 		for element in xrange(len(canvas.data.board[0])):
 			canvas.data.board[fillRow][element] = canvas.data.emptyColor
-					
+
 	if fullRowCount != 0:
-		canvas.data.score += int(fullRowCount**2)*100    
+		canvas.data.score += int(fullRowCount**2)*100
 		canvas.data.connection.sendDict({"lines":fullRowCount}) #Sends the dict as a JSON string to the server
 
 def addManyJunkRows(rows):
 	for i in xrange(rows):
 		addJunkRow()
-		
+
 def addJunkRow():
 	# first check if we have been KO'd
 	topRowEmpty = True
 	for c in xrange(canvas.data.cols):
 		if canvas.data.board[0][c] != canvas.data.emptyColor:
 			canvas.data.isGameOver = True
-			return   
+			return
 
 	newJunkRow = (["pink"] * canvas.data.cols)
 	newJunkRow[random.randint(0, canvas.data.cols-1)] = canvas.data.emptyColor
@@ -386,7 +386,7 @@ def drawShadow():
 
 def drawScore():
 	canvas.create_text((canvas.data.cols*22)/2, 10, text = "SCORE = %d" %(canvas.data.score), fill = "white", font = "Courier 16 bold")
-		
+
 def drawHeld():
 	canvas.create_text((canvas.data.cols*28), 340,
 						text = "Held Piece:",
@@ -396,7 +396,7 @@ def drawHeld():
 			for col in xrange(len(canvas.data.heldPiece[0])):
 				if canvas.data.heldPiece[row][col] == True:
 					drawCell(30+(canvas.data.cols+col)*20,360+(row)*20, canvas.data.heldPieceColor)
-										
+
 def drawNext():
 	canvas.create_text((canvas.data.cols*28), 40,
 											text = "Next Piece:",
@@ -407,7 +407,7 @@ def drawNext():
 				if canvas.data.nextPiece[row][col] == True:
 					drawCell(30+(canvas.data.cols+col)*20,60+(row)*20, canvas.data.nextPieceColor)
 
-#initiates the moving and rotation of the falling piece 
+#initiates the moving and rotation of the falling piece
 def keyPressed(event):
 	if not canvas.data.isGameOver and not canvas.data.spacePressed:
 		drow = 0
@@ -458,12 +458,12 @@ def timerFired():
 	canvas.data.timerId = canvas.after(canvas.data.delay, timerFired)
 
 	# NETWORK CONNECTIONS
-	for i in canvas.data.connection._receivedMessages:  
+	for i in canvas.data.connection._receivedMessages:
 		if jsonutils.isJSON(i):
 			d = jsonutils.jsonToDict(i)
 			#print d
 			if "lines" in d:
-				numLines = d["lines"]    
+				numLines = d["lines"]
 				addManyJunkRows(numLines)
 			if "control" in d:
 				if d["control"] == "restart":
@@ -497,7 +497,7 @@ class ServerDialog(tkSimpleDialog.Dialog):
 		self.cb_server = Checkbutton(master, text="Start game server", variable=self.cb_server_var)
 		self.cb_client.grid(row=0,column=1)
 		self.cb_server.grid(row=1,column=1)
-	
+
 	def apply(self):
 		self.cb_client_bool = bool(self.cb_client_var.get())
 		self.cb_server_bool = bool(self.cb_server_var.get())
@@ -524,11 +524,11 @@ def run():
 	cols = 10
 	global root
 	root = Tk()
-	
+
 	d1 = ServerDialog(root, "Server/Client Options")
 	startclient = d1.cb_client_bool
 	startserver = d1.cb_server_bool
-	
+
 	global canvas
 	canvas = Canvas(root, width = cols*20 + 140, height = rows*20 + 40)
 	root.resizable(width = 0, height = 0)
@@ -543,7 +543,7 @@ def run():
 		canvas.data.serverpid = None
 	if not startclient:
 		sys.exit()
-	
+
 	if not startserver:
 		d2 = RoomDialog(root, "Enter Room Name")
 		room_name = d2.result
@@ -551,9 +551,9 @@ def run():
 	else:
 		room_name = iputils.ipToWords(iputils.getMyIP())
 		d2 = DisplayRoomNameDialog(root, "Room Name")
-	
+
 	canvas.data.connection = messenger.ClientConnect(iputils.wordsToIP(room_name))
-	
+
 	canvas.data.rows = rows
 	canvas.data.cols = cols
 	canvas.pack()
