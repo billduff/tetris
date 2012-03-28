@@ -82,7 +82,7 @@ def drawBoard():
         rows = canvas.data.rows
         cols = canvas.data.cols
         removeFullRows()
-        for row in xrange(rows):
+        for row in xrange(rows-5):
                 for col in xrange(cols):
                         drawCell(20+col*20, 20+row*20,canvas.data.board[row][col])
         if(canvas.data.isGameOver == True):
@@ -450,6 +450,8 @@ def keyPressed(event):
                 redrawAll()
         if(event.char == "r"):
                 restart()
+        if event.char == "q":
+                quitGame()
                 
 def keyReleased(event):
         if(event.keysym == "Down"):
@@ -483,6 +485,11 @@ def timerFired():
                                 numLines = d[u"lines"]    
                                 addManyJunkRows(numLines)    
                 canvas.data.connection._receivedMessages.remove(i)
+
+def quitGame():
+        canvas.data.connection.exit()
+        canvas.data.serverprocess.terminate()
+        sys.exit()
 
 def redrawAll():
         canvas.delete(ALL)
@@ -519,7 +526,7 @@ class RoomDialog(tkSimpleDialog.Dialog):
 
 # to create the root and canvas
 def run():
-        rows = 20
+        rows = 25
         cols = 10
         global canvas
         root = Tk()
@@ -527,12 +534,6 @@ def run():
         d1 = ServerDialog(root, "Server/Client Options")
         startclient = d1.cb_client_bool
         startserver = d1.cb_server_bool
-        if startserver == True:
-            subprocess.Popen('./server.py', shell=True)
-        if startclient == False:
-            sys.exit()
-        d2 = RoomDialog(root, "Enter Room Name")
-        room_name = d2.result
         
         canvas = Canvas(root, width = cols*20 + 140, height = rows*20 + 40)
         canvas.pack()
@@ -540,7 +541,17 @@ def run():
         root.canvas = canvas.canvas = canvas
         class Struct: pass
         canvas.data = Struct()
+        if startserver == True:
+            canvas.data.serverprocess = subprocess.Popen('./server.py', shell=True)
+        else:
+            canvas.data.serverprocess = None
+        if startclient == False:
+            sys.exit()
+        
+        d2 = RoomDialog(root, "Enter Room Name")
+        room_name = d2.result
         canvas.data.connection = messenger.ClientConnect(iputils.wordsToIP(room_name))
+        
         canvas.data.rows = rows
         canvas.data.cols = cols
         init()
