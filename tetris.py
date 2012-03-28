@@ -5,7 +5,6 @@ import random
 import fileinput
 import messenger
 import iputils
-import re
 import json
 import jsonutils
 import subprocess, os, signal
