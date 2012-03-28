@@ -7,6 +7,7 @@
 from sys import exit, argv, stdin
 from socket import socket, AF_INET, SOCK_STREAM
 from threading import Thread
+import sys
 import ConfigParser
 import json
 
@@ -20,29 +21,28 @@ port = int(config.get("configvalues","port"))
 class ClientReceiveThread(Thread):
 	def __init__(self, sock):
 		Thread.__init__(self)
-		self._quit = False
 		self._sock = sock
 		self._receivedMessages = []
 
 	def run(self):
 		print 'Listening for new messages from server'
 
-		inFlo = self._sock.makefile('r')
+		self._inFlo = self._sock.makefile('r')
 
 		while True:
-			line = inFlo.readline()
-			if not line or self.quit:
+			line = self._inFlo.readline()
+			if not line:
 				break
 			self._receivedMessages.append(line)
 			
 			print line
 		
+		quitThread()
+	
+	def quitThread(self):
+		self._inFlo.close()
 		self._sock.close()
-		inFlo.close()
-		print 'Exiting thread'
-    
-	def quit(self):
-		self._quit = True
+		print 'Server listening thread can quit now...'
     
 class ClientConnect(object):
 	def __init__(self, serverip):
@@ -76,9 +76,11 @@ class ClientConnect(object):
 		dictstr = json.dumps(d)
 		self.sendToServer(dictstr)
 	
-	def exit(self):
+	def quitThread(self):
 		self._sock.close()
-		self._clientReceiveThread.quit()
+		self._clientReceiveThread.quitThread()
+		self._clientReceiveThread._Thread__stop()
+		print "Quit server listener"
 
 #-----------------------------------------------------------------------
 

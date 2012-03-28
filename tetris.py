@@ -8,7 +8,7 @@ import iputils
 import re
 import json
 import jsonutils
-import subprocess
+import subprocess, os, signal
 import sys
 import tkSimpleDialog
 
@@ -469,8 +469,14 @@ def timerFired():
 		canvas.data.connection._receivedMessages.remove(i)
 
 def quitGame():
-	canvas.data.connection.exit()
-	canvas.data.serverprocess.terminate()
+	print "Quitting server listener..."
+	canvas.data.connection.quitThread()
+	if canvas.data.serverpid != None:
+		print "Sending interrupt signal to server with pid",canvas.data.serverpid
+		os.kill(canvas.data.serverpid,signal.SIGINT)
+	print "Exiting Tkinter..."
+	root.destroy()
+	print "Exiting..."
 	sys.exit()
 
 def redrawAll():
@@ -510,22 +516,24 @@ class RoomDialog(tkSimpleDialog.Dialog):
 def run():
 	rows = 25
 	cols = 10
-	global canvas
+	global root
 	root = Tk()
 	
 	d1 = ServerDialog(root, "Server/Client Options")
 	startclient = d1.cb_client_bool
 	startserver = d1.cb_server_bool
 	
+	global canvas
 	canvas = Canvas(root, width = cols*20 + 140, height = rows*20 + 40)
 	root.resizable(width = 0, height = 0)
 	root.canvas = canvas.canvas = canvas
 	class Struct: pass
 	canvas.data = Struct()
 	if startserver:
-		canvas.data.serverprocess = subprocess.Popen('./server.py', shell=True)
+		proc = subprocess.Popen('./server.py')
+		canvas.data.serverpid = proc.pid
 	else:
-		canvas.data.serverprocess = None
+		canvas.data.serverpid = None
 	if not startclient:
 		sys.exit()
 	
