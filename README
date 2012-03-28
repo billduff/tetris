@@ -1,4 +1,4 @@
-Multiplayer tetris written in python that allows local network play. 
+Multiplayer tetris written in python that allows network play. 
 Visit nicepipesbill.tumblr.com for more information.
 
 To play, install python, then double click on the "tetris.py" file in the downloaded folder.

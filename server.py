@@ -10,6 +10,8 @@ from time import time
 import sys
 import signal
 import iputils
+import random
+import jsonutils
 import ConfigParser
 
 #-----------------------------------------------------------------------
@@ -51,7 +53,14 @@ class ServerThread(Thread):
             if not line:
                 break
 
-            blastMessage(line, self) # Send out new message to all connected clients
+            d = jsonutils.jsonToDict(line)
+                    
+            if "lines" in d:
+                    blastToRandom(line, self)
+            elif "control" in d:
+                    blastToAll(line, self)
+
+            blastToAllButMe(line, self) # Send out new message to all connected clients
 
         self.quitThread()
         
@@ -69,10 +78,27 @@ class ServerThread(Thread):
         self._Thread__stop()
         
 #-----------------------------------------------------------------------
-def blastMessage(newMsg, exceptThread):
+def blastToAllButMe(newMsg, exceptThread):
     for client in connectionThreads:
         if client != exceptThread:
             client.sendMsg(newMsg)
+
+def blastToAll(newMsg):
+    for client in connectionThreads:
+        client.sendMsg(newMsg)
+
+def blastToRandom(newMsg, exceptThread):
+    l = len(connectionThreads)
+    
+    if l <= 1:
+        return
+    
+    t = None
+    while (exceptThread == t):
+        randInt = randint(l - 1)
+        t = connectionThreads[randInt]
+    
+    t.sendMsg(newMsg)
             
 def quitThreads(signal, frame):
     print "Server received ctrl-c"
