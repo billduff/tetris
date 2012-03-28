@@ -536,7 +536,6 @@ def run():
         startserver = d1.cb_server_bool
         
         canvas = Canvas(root, width = cols*20 + 140, height = rows*20 + 40)
-        canvas.pack()
         root.resizable(width = 0, height = 0)
         root.canvas = canvas.canvas = canvas
         class Struct: pass
@@ -554,6 +553,7 @@ def run():
         
         canvas.data.rows = rows
         canvas.data.cols = cols
+        canvas.pack()
         init()
         redrawAll()
         root.bind("<KeyPress>", keyPressed)
