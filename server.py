@@ -114,6 +114,7 @@ def main():
 #-----------------------------------------------------------------------
 
 signal.signal(signal.SIGINT, quitThreads)
+signal.signal(signal.SIGQUIT, quitThreads)
 
 if __name__ == '__main__':
     main()
