@@ -10,7 +10,6 @@ from time import time
 import sys
 import signal
 import iputils
-import json
 import ConfigParser
 
 #-----------------------------------------------------------------------
