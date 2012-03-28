@@ -91,13 +91,13 @@ def drawBoard():
 			font = "Courier 22 bold")
 		#display a random Eddie quote when you die, like COD but better
 		#x0 y0 x1 y1
-		canvas.create_rectangle(20, (((rows*20)+180)/2), 20+(cols*20), (((rows*20)+290)/2),
-								fill = "#1C2124")
+		canvas.create_rectangle(20, (((rows*20)+180)/2), 20+(cols*20),
+                                (((rows*20)+330)/2), fill = "#1C2124")
 		canvas.create_text(25, (((rows*20)+200)/2),
 							anchor = "nw",
 							width = (cols*20),
 							text = "\"" + canvas.quotes[quoteNum] + "\" - Eddie",
-							fill = "white", font = "Courier 12 bold")
+							fill = "white", font = "Arial 12")
    
 #to randomly chose a next piece, set its color and position it in the
 #middle of the top row         
