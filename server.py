@@ -58,7 +58,7 @@ class ServerThread(Thread):
             if "lines" in d:
                     blastToRandom(line, self)
             elif "control" in d:
-                    blastToAll(line, self)
+                    blastToAll(line)
 
             blastToAllButMe(line, self) # Send out new message to all connected clients
 
@@ -93,9 +93,11 @@ def blastToRandom(newMsg, exceptThread):
     if l <= 1:
         return
     
-    t = None
+    t = None        
+    randInt = random.randint(0, l - 1)
+    t = connectionThreads[randInt]
     while (exceptThread == t):
-        randInt = randint(l - 1)
+        randInt = random.randint(0, l - 1)
         t = connectionThreads[randInt]
     
     t.sendMsg(newMsg)
