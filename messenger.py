@@ -35,7 +35,7 @@ class ClientReceiveThread(Thread):
 				break
 			self._receivedMessages.append(line)
 			
-			print line
+			#print line
 		
 		self.quitThread()
 	
