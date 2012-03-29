@@ -60,7 +60,7 @@ class ServerThread(Thread):
             elif "control" in d:
                     blastToAll(line)
 
-            blastToAllButMe(line, self) # Send out new message to all connected clients
+            #blastToAllButMe(line, self) # Send out new message to all connected clients
 
         self.quitThread()
         
@@ -89,18 +89,16 @@ def blastToAll(newMsg):
 
 def blastToRandom(newMsg, exceptThread):
     l = len(connectionThreads)
-    
     if l <= 1:
         return
-    
-    t = None        
-    randInt = random.randint(0, l - 1)
+
+    connectionThreads.remove(exceptThread)
+    randInt = random.randint(0, l - 2)
     t = connectionThreads[randInt]
-    while (exceptThread == t):
-        randInt = random.randint(0, l - 1)
-        t = connectionThreads[randInt]
     
     t.sendMsg(newMsg)
+
+    connectionThreads.append(exceptThread)
             
 def quitThreads(signal, frame):
     print "Server received ctrl-c"
